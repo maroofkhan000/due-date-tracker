@@ -171,29 +171,36 @@ function HomeView({ subjects, user }) {
         </div>
       </div>
 
-      <div className="cat-card border-l-8 border-primary-light">
-        <div className="cat-label text-primary-light" style={{ backgroundColor: 'rgba(251, 191, 36, 0.1)' }}>Humanities / Arts</div>
-        <h2 className="text-3xl font-bold text-main mb-3">Theory</h2>
-        <p className="text-text-muted">Deep conceptual frameworks, philosophy of science, and foundational literature analysis.</p>
-        <div className="mt-6 flex items-center justify-between">
-          <div className="flex -space-x-2">
-            {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-border border-2 border-bg-dark"></div>)}
-            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-[10px] text-bg-dark font-bold">+4</div>
-          </div>
-          <div className="text-xs text-text-muted font-bold uppercase">Active Researchers</div>
-        </div>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <CategoryCard 
+          type="theory" 
+          label="Humanities / Arts" 
+          title="Theory" 
+          desc="Deep conceptual frameworks, philosophy of science, and foundational literature analysis."
+          color="var(--primary-light)"
+          bg="rgba(251, 191, 36, 0.1)"
+          onClick={() => setActiveTab('subjects')}
+        />
 
-      <div className="cat-card border-l-8 border-accent">
-        <div className="cat-label text-accent" style={{ backgroundColor: 'rgba(34, 211, 238, 0.1)' }}>Science / Logic</div>
-        <h2 className="text-3xl font-bold text-main mb-3">Lab</h2>
-        <p className="text-text-muted">Experimental data, chemical analysis, and real-time computation.</p>
-        <div className="mt-8">
-          <div className="w-full bg-border h-1.5 rounded-full overflow-hidden">
-            <div className="bg-accent h-full w-[40%]"></div>
-          </div>
-          <div className="text-xs text-accent font-bold uppercase mt-3 tracking-widest">12 Reports Pending</div>
-        </div>
+        <CategoryCard 
+          type="lab" 
+          label="Science / Logic" 
+          title="Lab" 
+          desc="Experimental data, chemical analysis, and real-time computation."
+          color="var(--accent)"
+          bg="rgba(34, 211, 238, 0.1)"
+          onClick={() => setActiveTab('subjects')}
+        />
+
+        <CategoryCard 
+          type="other" 
+          label="Interdisciplinary" 
+          title="Custom" 
+          desc="Tailor your own tracking milestones for projects and electives."
+          color="var(--secondary)"
+          bg="rgba(219, 39, 119, 0.1)"
+          onClick={() => setActiveTab('subjects')}
+        />
       </div>
 
       <div className="stat-grid mb-10">
@@ -269,6 +276,19 @@ function BottomNavItem({ active, onClick, icon, label }) {
   return (
     <div onClick={onClick} className={`bottom-nav-item ${active ? 'active' : ''}`}>
       {icon} <span>{label}</span>
+    </div>
+  );
+}
+
+function CategoryCard({ label, title, desc, color, bg, onClick }) {
+  return (
+    <div onClick={onClick} className="cat-card border-l-4 cursor-pointer hover:scale-[1.02] transition-transform shadow-lg h-full flex flex-col" style={{ borderLeftColor: color }}>
+      <div className="cat-label" style={{ color: color, backgroundColor: bg }}>{label}</div>
+      <h2 className="text-2xl font-bold text-main mb-2">{title}</h2>
+      <p className="text-text-muted text-sm leading-relaxed mb-6 flex-1">{desc}</p>
+      <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
+        Interact <ChevronRight size={14} />
+      </div>
     </div>
   );
 }
