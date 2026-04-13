@@ -1,16 +1,33 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --bg-dark: #020205;
-  --bg-card: rgba(15, 15, 30, 0.4);
-  --primary: #7c3aed;
-  --primary-light: #a78bfa;
-  --secondary: #db2777;
-  --accent: #22d3ee;
-  --text-main: #f8fafc;
+  /* Premium Light Theme */
+  --bg-dark: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --primary: #fbbf24;
+  --primary-light: #f59e0b;
+  --secondary: #6366f1;
+  --accent: #0ea5e9;
+  --text-main: #0f172a;
   --text-muted: #64748b;
+  --border: rgba(0, 0, 0, 0.05);
+  --success: #10b981;
+  --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+[data-theme='dark'] {
+  /* Premium Dark Theme with Yellow Highlights */
+  --bg-dark: #020205;
+  --bg-card: rgba(15, 15, 30, 0.6);
+  --primary: #fbbf24; /* Yellow as requested */
+  --primary-light: #fcd34d;
+  --secondary: #ec4899;
+  --accent: #22d3ee;
+  --text-main: #fbbf24; /* Yellow text for highlights */
+  --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
   --success: #10b981;
+  --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -103,15 +120,20 @@ body::before {
 .font-medium { font-weight: 500; }
 
 .text-text-muted { color: var(--text-muted); }
-.text-purple-500 { color: var(--primary-light); }
+.text-main { color: var(--text-main); }
+.text-body { color: var(--text-main); opacity: 0.9; }
+.text-primary { color: var(--primary); }
 .text-primary-light { color: var(--primary-light); }
 .text-success { color: var(--success); }
 .text-red-400 { color: #fb7185; }
-.bg-success\/10 { background-color: rgba(16, 185, 129, 0.08); }
+.bg-card { background: var(--bg-card); backdrop-filter: blur(20px); }
+.bg-primary { background-color: var(--primary); }
+.bg-primary\/5 { background-color: rgba(251, 191, 36, 0.05); }
 .bg-white\/5 { background-color: rgba(255, 255, 255, 0.03); }
 
 .border-t { border-top: 1px solid var(--border); }
 .border-b { border-bottom: 1px solid var(--border); }
+.border-r { border-right: 1px solid var(--border); }
 .border-border { border-color: var(--border); }
 .rounded-full { border-radius: 9999px; }
 .rounded-xl { border-radius: 1rem; }
@@ -122,7 +144,7 @@ body::before {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
   border-radius: 28px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--card-shadow);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
