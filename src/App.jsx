@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db, googleProvider } from './firebase';
-import { signInWithRedirect, signOut, onAuthStateChanged, getRedirectResult } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, onSnapshot, addDoc, deleteDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { 
   Plus, Trash2, LogOut, GraduationCap, BookOpen, 
@@ -24,7 +24,6 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    getRedirectResult(auth).catch(e => console.error("Auth error", e));
     const unsubscribe = onAuthStateChanged(auth, u => { setUser(u); setLoading(false); });
     return () => unsubscribe();
   }, []);
@@ -38,7 +37,13 @@ function App() {
     }
   }, [user]);
 
-  const login = () => signInWithRedirect(auth, googleProvider);
+  const login = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
   const logout = () => signOut(auth);
 
   const createSubject = async (type) => {
