@@ -1,19 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Permanent Intellectual Atelier Theme (Dark/Yellow) */
-  --bg-dark: #020205;
-  --bg-card: rgba(15, 15, 30, 0.6);
-  --primary: #fbbf24; /* Yellow Highlights */
-  --primary-light: #fcd34d;
-  --secondary: #ec4899;
+  /* Exact Stitch Design Palette (Intellectual Atelier) */
+  --bg-dark: #0a0e14;
+  --bg-card: rgba(22, 27, 34, 0.7);
+  --primary: #facc15; /* Vibrant Stitch Yellow */
+  --primary-light: #fef08a;
+  --secondary: #fb7185;
   --accent: #22d3ee;
-  --text-main: #fbbf24; /* Yellow text as requested */
-  --text-body: #f1f5f9;
+  --text-main: #facc15; 
+  --text-body: #f8fafc;
   --text-muted: #94a3b8;
-  --border: rgba(255, 255, 255, 0.08);
-  --success: #10b981;
-  --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --border: rgba(255, 255, 255, 0.05);
+  --success: #34d399;
+  --card-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 30px 60px -30px rgba(0, 0, 0, 0.9);
 }
 
 * {
