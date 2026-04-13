@@ -1,314 +1,157 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db, googleProvider } from './firebase';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { collection, query, where, onSnapshot, addDoc, deleteDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { signInWithRedirect, signOut, onAuthStateChanged, getRedirectResult } from 'firebase/auth';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { 
-  Plus, Trash2, LogOut, GraduationCap, BookOpen, 
-  Microscope, Settings, X, Check, LayoutDashboard, 
-  Moon, Sun, Info, ChevronRight, BarChart3, Home, 
-  Layers, User as UserIcon, Bell
+  Bell, Settings, ArrowRight, 
+  Beaker, Plus
 } from 'lucide-react';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('home');
-  const [theme, setTheme] = useState('dark');
-  const [showModal, setShowModal] = useState(null);
-  const [newSubjectName, setNewSubjectName] = useState('');
-  const [customItems, setCustomItems] = useState(['Assignment 1']);
+  const [activeTab, setActiveTab] = useState('courses');
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
+    getRedirectResult(auth).catch(e => console.error("Auth error", e));
     const unsubscribe = onAuthStateChanged(auth, u => { setUser(u); setLoading(false); });
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      const q = query(collection(db, 'subjects'), where('userId', '==', user.uid));
-      return onSnapshot(q, (snapshot) => {
-        setSubjects(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-      });
-    }
-  }, [user]);
-
-  const login = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
-  const logout = () => signOut(auth);
-
-  const createSubject = async (type) => {
-    if (!newSubjectName.trim()) return;
-    let items = [];
-    if (type === 'theory') {
-      items = [{ label: 'Assignment 1', completed: false }, { label: 'Assignment 2', completed: false }, { label: 'Quiz 1', completed: false }, { label: 'Quiz 2', completed: false }];
-    } else if (type === 'lab') {
-      items = [{ label: 'Experiment 1', completed: false }, { label: 'Experiment 2', completed: false }, { label: 'Lab Record', completed: false }, { label: 'Final Viva', completed: false }];
-    } else {
-      items = customItems.map(item => ({ label: item, completed: false }));
-    }
-
-    try {
-      await addDoc(collection(db, 'subjects'), {
-        userId: user.uid,
-        name: newSubjectName,
-        type,
-        items,
-        createdAt: serverTimestamp()
-      });
-      setNewSubjectName('');
-      setShowModal(null);
-    } catch (e) { console.error(e); }
-  };
-
-  const toggleItem = async (subjectId, itemIndex) => {
-    const subject = subjects.find(s => s.id === subjectId);
-    const newItems = [...subject.items];
-    newItems[itemIndex].completed = !newItems[itemIndex].completed;
-    await updateDoc(doc(db, 'subjects', subjectId), { items: newItems });
-  };
-
-  const deleteSubject = (id) => deleteDoc(doc(db, 'subjects', id));
-
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-[#00e5ff]"></div>
     </div>
   );
 
   if (!user) return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className="glass-card p-10 max-w-md w-full text-center fade-in">
-        <div className="float mb-6"><GraduationCap size={72} className="text-primary mx-auto" /></div>
-        <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">StudyTrack</h1>
-        <p className="text-text-muted mb-10 text-lg">Your intellectual journey, organized.</p>
-        <button onClick={login} className="btn-primary w-full justify-center py-4">Sign in with Google</button>
+        <h1 className="text-4xl font-bold mb-4 font-outfit text-[#00e5ff] tracking-tight">Scholarly Atelier</h1>
+        <p className="text-[#94a3b8] mb-10 text-lg">Sign in to refine your curriculum.</p>
+        <button onClick={() => signInWithRedirect(auth, googleProvider)} className="btn-cyan w-full justify-center py-4 text-center items-center">
+          Sign in with Google
+        </button>
       </div>
     </div>
   );
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
-      {/* Sidebar Navigation (Desktop) */}
-      <aside className="hidden md:flex w-64 bg-card border-r border-border p-6 flex-col gap-8 shadow-xl z-50">
-        <div className="flex items-center gap-3 px-2">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-bg-dark font-bold shadow-lg">ST</div>
-          <span className="text-xl font-bold text-main">Atelier</span>
+    <div className="min-h-screen flex flex-col relative overflow-hidden">
+      {/* Top Navbar */}
+      <nav className="relative z-20 px-8 py-5 flex items-center justify-between border-b border-white border-opacity-5">
+        <div className="text-2xl font-bold font-outfit tracking-tight" style={{ color: '#00e5ff' }}>Scholarly Atelier</div>
+        <div className="hidden md:flex items-center space-x-10 text-sm font-medium">
+          <button className={`nav-link ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
+          <button className={`nav-link ${activeTab === 'courses' ? 'active' : ''}`} onClick={() => setActiveTab('courses')}>Courses</button>
+          <button className={`nav-link ${activeTab === 'research' ? 'active' : ''}`} onClick={() => setActiveTab('research')}>Research</button>
+          <button className={`nav-link ${activeTab === 'schedule' ? 'active' : ''}`} onClick={() => setActiveTab('schedule')}>Schedule</button>
         </div>
-        <nav className="flex flex-col gap-2">
-          <NavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<Home size={20} />} label="Home" />
-          <NavItem active={activeTab === 'subjects'} onClick={() => setActiveTab('subjects')} icon={<Layers size={20} />} label="Subjects" />
-          <NavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={20} />} label="Profile" />
-        </nav>
-        <div className="mt-auto flex flex-col gap-4">
-          <button onClick={logout} className="text-text-muted hover:text-red-400 flex items-center gap-2 px-4 py-2 text-sm transition-colors pt-4">
-            <LogOut size={16} /> Sign Out
+        <div className="flex items-center gap-5">
+          <button className="text-[#00e5ff] hover:text-white transition-colors"><Bell size={20} fill="currentColor" /></button>
+          <button className="text-[#00e5ff] hover:text-white transition-colors"><Settings size={20} fill="currentColor" /></button>
+          <button onClick={() => signOut(auth)} title="Sign Out">
+            <img src={user.photoURL} alt="User" className="w-8 h-8 rounded-full border border-white/10 hover:border-[#00e5ff] transition-colors" />
           </button>
         </div>
-      </aside>
+      </nav>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-12 overflow-y-auto">
-        <div className="flex md:hidden justify-between items-center mb-6">
-          <div className="flex items-center gap-3">
-            <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full border-2 border-primary" />
-            <span className="font-bold text-main">Atelier Academic</span>
+      {/* Main Content */}
+      <main className="relative z-10 flex-1 p-8 md:p-12 max-w-[1280px] mx-auto w-full fade-in">
+        <div className="mb-10">
+          <h1 className="font-outfit text-4xl md:text-5xl font-bold text-white mb-4">Refine Your Curriculum</h1>
+          <p className="text-[#94a3b8] max-w-2xl text-lg leading-relaxed">
+            Choose the nature of your next academic endeavor. Your selection determines the methodology and resources allocated to your workspace.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+          {/* Big Theoretical Card */}
+          <div className="lg:col-span-2 relative overflow-hidden rounded-[24px] border border-white/5 p-10 flex flex-col justify-end min-h-[440px] group transition-all">
+            <div className="absolute inset-0 bg-[#0f1524]"></div>
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-30 mix-blend-luminosity"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0f1524] via-[#0f1524]/80 to-transparent"></div>
+            
+            <div className="relative z-10 w-full md:w-3/4">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="badge-magenta">THEORETICAL</span>
+                <span className="text-sm text-gray-300 font-medium">48 Modules Available</span>
+              </div>
+              <h2 className="font-outfit text-[2.5rem] leading-none font-bold text-white mb-4">Principles & Analysis</h2>
+              <p className="text-gray-300 text-[15px] mb-8 leading-relaxed max-w-md">
+                Deep-dive into abstract frameworks, historical contexts, and critical literature reviews. Designed for extensive reading and synthesis.
+              </p>
+              <button className="btn-cyan flex items-center gap-2 w-max text-sm shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]">
+                Begin Theory Path <ArrowRight size={18} />
+              </button>
+            </div>
+            {/* Outline Glow */}
+            <div className="absolute inset-0 border border-[#f000ff]/0 group-hover:border-[#f000ff]/30 rounded-[24px] transition-colors duration-500 pointer-events-none"></div>
+          </div>
+
+          {/* Right Column Stacked */}
+          <div className="flex flex-col gap-6 h-full">
+            <div className="bg-[#1c2235] rounded-[24px] border border-white/5 p-8 flex flex-col justify-between h-full relative group hover:border-[#a3e635]/30 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-[10px] border border-[#a3e635]/30 flex items-center justify-center mb-6 shadow-[inset_0_0_15px_rgba(163,230,53,0.1)] bg-[#a3e635]/5">
+                  <Beaker className="text-[#a3e635]" size={22} fill="currentColor" />
+                </div>
+                <h3 className="font-outfit text-2xl font-bold text-white mb-3 tracking-tight">Laboratory Practice</h3>
+                <p className="text-[#94a3b8] text-[13px] leading-relaxed mb-6">
+                  Practical applications, experimentation, and data analysis. Access virtual labs and technical simulators.
+                </p>
+              </div>
+              <div className="flex items-center justify-between pt-4 mt-auto">
+                <span className="text-[#a3e635] text-[10px] font-bold tracking-[0.15em]">ACTIVE WORKSHOPS</span>
+                <span className="bg-[#a3e635]/20 text-[#a3e635] text-[10px] font-bold px-2.5 py-1 rounded">12</span>
+              </div>
+            </div>
+
+            <div className="bg-[#1c2235] rounded-[24px] border border-white/5 p-8 flex flex-col h-full relative overflow-hidden group hover:border-[#00e5ff]/30 transition-colors">
+              <div className="absolute right-0 bottom-0 opacity-[0.03] pointer-events-none transform translate-x-4 translate-y-4">
+                <svg width="200" height="200" viewBox="0 0 100 100" className="fill-[#00e5ff]">
+                  <path d="M50 0 L55 40 L95 45 L55 50 L50 90 L45 50 L5 45 L45 40 Z"/>
+                  <path d="M85 70 L87 85 L100 87 L87 89 L85 100 L83 89 L70 87 L83 85 Z"/>
+                </svg>
+              </div>
+              <h3 className="font-outfit text-2xl font-bold text-white mb-3 tracking-tight relative z-10">Custom Elective</h3>
+              <p className="text-[#94a3b8] text-[13px] leading-relaxed mb-8 relative z-10">
+                Build your own interdisciplinary module. Combine cross-faculty resources for a unique academic blend.
+              </p>
+              <div className="mt-auto relative z-10">
+                <button className="text-[#00e5ff] text-[10px] font-bold tracking-[0.15em] flex items-center gap-2 hover:text-white transition-colors">
+                  CONFIGURE NOW <Settings size={14} />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {activeTab === 'home' && <HomeView subjects={subjects} user={user} />}
-        {activeTab === 'subjects' && <SubjectsView subjects={subjects} onAdd={setShowModal} onToggle={toggleItem} onDelete={deleteSubject} />}
-        {activeTab === 'profile' && <ProfileView user={user} logout={logout} />}
-
+        {/* Bottom Info Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#151a2d] rounded-[20px] p-7 border border-white/5 hover:border-white/10 transition-colors">
+            <h4 className="text-5xl font-outfit font-bold text-[#00e5ff] mb-2">98%</h4>
+            <h5 className="font-bold text-white mb-2 text-[15px]">Completion Rate</h5>
+            <p className="text-sm text-[#94a3b8] leading-relaxed">Students who follow the structured Atelier paths show significantly higher retention rates.</p>
+          </div>
+          <div className="bg-[#151a2d] rounded-[20px] p-7 border border-white/5 hover:border-white/10 transition-colors">
+            <h4 className="text-5xl font-outfit font-bold text-[#a3e635] mb-2">24/7</h4>
+            <h5 className="font-bold text-white mb-2 text-[15px]">Research Access</h5>
+            <p className="text-sm text-[#94a3b8] leading-relaxed">Global library access is included with all Theoretical and Practical modules.</p>
+          </div>
+          <div className="bg-[#151a2d] rounded-[20px] p-7 border border-white/5 hover:border-white/10 transition-colors">
+            <h4 className="text-5xl font-outfit font-bold text-[#f000ff] mb-2">Sync</h4>
+            <h5 className="font-bold text-white mb-2 text-[15px]">Cross-Platform</h5>
+            <p className="text-sm text-[#94a3b8] leading-relaxed">Your progress is updated in real-time across the Scholarly mobile and desktop ecosystem.</p>
+          </div>
+        </div>
       </main>
 
-      {/* Bottom Nav (Mobile) */}
-      <div className="bottom-nav md:hidden">
-        <BottomNavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<Home size={24} />} label="Home" />
-        <BottomNavItem active={activeTab === 'subjects'} onClick={() => setActiveTab('subjects')} icon={<Layers size={24} />} label="Subjects" />
-        <BottomNavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={24} />} label="Profile" />
-      </div>
-
-      {showModal && (
-        <CreationModal 
-          type={showModal} 
-          onClose={() => setShowModal(null)} 
-          onSubmit={createSubject} 
-          name={newSubjectName} 
-          setName={setNewSubjectName}
-          customItems={customItems}
-          setCustomItems={setCustomItems}
-        />
-      )}
-    </div>
-  );
-}
-
-function HomeView({ subjects, user }) {
-  const totalItems = subjects.reduce((acc, s) => acc + (s.items?.length || 0), 0);
-  const completedItems = subjects.reduce((acc, s) => acc + (s.items?.filter(i => i.completed).length || 0), 0);
-  const progressPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
-
-  return (
-    <div className="fade-in">
-      <div className="text-text-muted uppercase tracking-widest text-xs font-bold mb-2">Curated Progress</div>
-      <h1 className="hero-title text-main">Master Your <br/> Intellectual <br/> Journey.</h1>
-
-      <div className="glass-card p-8 flex items-center gap-8 mb-10">
-        <div className="progress-circle" style={{ '--p': progressPercent }} data-label={`${progressPercent}%`}></div>
-        <div>
-          <div className="text-text-muted uppercase text-xs font-bold tracking-widest">Academic Standing</div>
-          <div className="text-3xl font-bold text-main mt-1">3.8 GPA</div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="cat-card" style={{ padding: '30px', margin: 0 }}>
-          <div className="cat-label text-primary" style={{ backgroundColor: 'rgba(192, 132, 252, 0.1)' }}>Humanities / Arts</div>
-          <h2 className="text-3xl font-bold text-main mb-3">Theory</h2>
-          <p className="text-text-muted">Deep conceptual frameworks, philosophy of science, and foundational literature analysis.</p>
-          <div className="mt-6 flex items-center justify-between">
-            <div className="flex -space-x-2">
-              {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-border border-2 border-bg-dark"></div>)}
-              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-[10px] text-bg-dark font-bold">+4</div>
-            </div>
-            <div className="text-xs text-text-muted font-bold uppercase">Active Researchers</div>
-          </div>
-        </div>
-
-        <div className="cat-card" style={{ padding: '30px', margin: 0 }}>
-          <div className="cat-label text-accent" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>Science / Logic</div>
-          <h2 className="text-3xl font-bold text-main mb-3">Lab</h2>
-          <p className="text-text-muted">Experimental data, chemical analysis, and real-time computation.</p>
-          <div className="mt-8">
-            <div className="w-full bg-border h-1.5 rounded-full overflow-hidden">
-              <div className="bg-accent h-full w-[40%]"></div>
-            </div>
-            <div className="text-xs text-accent font-bold uppercase mt-3 tracking-widest">12 Reports Pending</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="cat-card flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10" style={{ padding: '24px' }}>
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-white/5 rounded-xl text-text-muted"><LayoutDashboard size={24}/></div>
-          <div>
-            <h2 className="text-xl font-bold text-main">Other / Custom</h2>
-            <p className="text-sm text-text-muted">Interdisciplinary electives, independent studies, and capstone projects.</p>
-          </div>
-        </div>
-        <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform" style={{ whiteSpace: 'nowrap' }}>Initialize Default Values</button>
-      </div>
-
-    </div>
-  );
-}
-
-function SubjectsView({ subjects, onAdd, onToggle, onDelete }) {
-  return (
-    <div className="fade-in">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-3xl font-bold text-main">My Courses</h2>
-        <div className="flex gap-2">
-          <button onClick={() => onAdd('theory')} className="p-3 bg-card border border-border rounded-xl text-primary"><BookOpen size={20}/></button>
-          <button onClick={() => onAdd('lab')} className="p-3 bg-card border border-border rounded-xl text-accent"><Microscope size={20}/></button>
-          <button onClick={() => onAdd('other')} className="p-3 bg-primary text-bg-dark rounded-xl"><Plus size={20}/></button>
-        </div>
-      </div>
-
-      <div className="glass-card overflow-hidden">
-        {subjects.length === 0 ? (
-          <div className="p-20 text-center text-text-muted">No courses tracked yet.</div>
-        ) : (
-          subjects.map(s => (
-            <div key={s.id} className="subject-row">
-              <div className="px-4">
-                <div className={`badge badge-${s.type} mb-2`}>{s.type}</div>
-                <h3 className="font-bold text-main">{s.name}</h3>
-              </div>
-              <div className="px-4 task-grid">
-                {s.items?.map((item, idx) => (
-                  <div key={idx} onClick={() => onToggle(s.id, idx)} className={`task-chip ${item.completed ? 'completed' : ''}`}>
-                    {item.label}
-                  </div>
-                ))}
-              </div>
-              <div className="px-4 text-center">
-                <button onClick={() => onDelete(s.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16}/></button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
-
-function ProfileView({ user, logout }) {
-  return (
-    <div className="fade-in text-center py-20">
-      <img src={user.photoURL} className="w-32 h-32 rounded-full border-4 border-primary mx-auto mb-6" alt="Profile" />
-      <h2 className="text-3xl font-bold text-main">{user.displayName}</h2>
-      <p className="text-text-muted mb-10">{user.email}</p>
-      <button onClick={logout} className="btn-primary mx-auto">Sign Out of Account</button>
-    </div>
-  );
-}
-
-function NavItem({ active, onClick, icon, label }) {
-  return (
-    <button onClick={onClick} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${active ? 'bg-primary text-bg-dark font-bold shadow-lg' : 'text-text-muted hover:bg-white/5 hover:text-main'}`}>
-      {icon} <span className="text-sm">{label}</span>
-    </button>
-  );
-}
-
-function BottomNavItem({ active, onClick, icon, label }) {
-  return (
-    <div onClick={onClick} className={`bottom-nav-item ${active ? 'active' : ''}`}>
-      {icon} <span>{label}</span>
-    </div>
-  );
-}
-
-function StatCardCompact({ label, value, color }) {
-  return (
-    <div className="stat-card" style={{ borderLeftColor: color }}>
-      <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1">{label}</div>
-      <div className="text-2xl font-bold text-main">{value}</div>
-    </div>
-  );
-}
-
-function CreationModal({ type, onClose, onSubmit, name, setName, customItems, setCustomItems }) {
-  return (
-    <div className="modal-overlay" onClick={e => e.target.className === 'modal-overlay' && onClose()}>
-      <div className="glass-card p-8 max-w-lg w-full relative">
-        <h2 className="text-2xl font-bold capitalize mb-6 text-main">New {type}</h2>
-        <input type="text" autoFocus className="w-full mb-6" placeholder="Subject Name" value={name} onChange={e => setName(e.target.value)} />
-        {type === 'other' && (
-          <div className="space-y-3 mb-6">
-            {customItems.map((it, idx) => (
-              <div key={idx} className="flex gap-2">
-                <input className="flex-1 py-2 px-3 text-sm" value={it} onChange={e => {
-                  const n = [...customItems]; n[idx] = e.target.value; setCustomItems(n);
-                }} />
-              </div>
-            ))}
-            <button onClick={() => setCustomItems([...customItems, 'New Milestone'])} className="text-xs text-primary font-bold">+ Add Milestone</button>
-          </div>
-        )}
-        <button onClick={() => onSubmit(type)} className="btn-primary w-full justify-center">Initialize Track</button>
-      </div>
+      {/* Floating Action Button */}
+      <button className="fixed bottom-12 right-12 z-50 w-14 h-14 bg-[#00e5ff] rounded-full flex items-center justify-center text-[#0f1523] shadow-[0_0_25px_rgba(0,229,255,0.4)] hover:scale-110 transition-transform">
+        <Plus size={26} strokeWidth={3} />
+      </button>
+      
     </div>
   );
 }
