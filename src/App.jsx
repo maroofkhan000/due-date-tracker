@@ -204,12 +204,6 @@ function HomeView({ subjects, user }) {
         <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform" style={{ whiteSpace: 'nowrap' }}>Initialize Default Values</button>
       </div>
 
-      <div className="stat-grid mb-10">
-        <StatCardCompact label="Credits" value="128" color="var(--primary)" />
-        <StatCardCompact label="Labs" value="14" color="var(--accent)" />
-        <StatCardCompact label="Thesis" value="01" color="var(--secondary)" />
-        <StatCardCompact label="Backlogs" value="00" color="#f87171" />
-      </div>
     </div>
   );
 }
