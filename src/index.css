@@ -330,6 +330,127 @@ input[type="text"]:focus {
   }
 }
 
+/* Bottom Navigation (Mobile Only) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--bg-card);
+  backdrop-filter: blur(25px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  z-index: 1000;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.bottom-nav-item.active {
+  color: var(--primary);
+}
+
+.bottom-nav-item span {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* Atelier Style Hero */
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.8rem;
+  line-height: 1.1;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+}
+
+/* Circular Progress */
+.progress-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(var(--primary) calc(var(--p) * 1%), rgba(255,255,255,0.05) 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.progress-circle::after {
+  content: attr(data-label);
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  background: var(--bg-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Stat Grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  padding: 20px;
+  border-left: 2px solid var(--primary);
+  background: var(--bg-card);
+  border-radius: 12px;
+}
+
+/* Category Card Enhancements */
+.cat-card {
+  padding: 30px;
+  border-radius: 24px;
+  background: var(--bg-card);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.cat-card .cat-label {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 769px) {
+  .bottom-nav { display: none; }
+}
+
+@media (max-width: 768px) {
+  aside { display: none; }
+  .flex-row { flex-direction: column; }
+  main { padding-bottom: 100px; }
+  .hero-title { font-size: 2.2rem; }
+}
+
 .fade-in {
   animation: fadeInSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

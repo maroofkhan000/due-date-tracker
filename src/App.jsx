@@ -5,7 +5,8 @@ import { collection, query, where, onSnapshot, addDoc, deleteDoc, doc, updateDoc
 import { 
   Plus, Trash2, LogOut, GraduationCap, BookOpen, 
   Microscope, Settings, X, Check, LayoutDashboard, 
-  Moon, Sun, Info, ChevronRight, BarChart3
+  Moon, Sun, Info, ChevronRight, BarChart3, Home, 
+  Layers, User as UserIcon, Bell
 } from 'lucide-react';
 
 function App() {
@@ -42,22 +43,11 @@ function App() {
 
   const createSubject = async (type) => {
     if (!newSubjectName.trim()) return;
-    
     let items = [];
     if (type === 'theory') {
-      items = [
-        { label: 'Assignment 1', completed: false },
-        { label: 'Assignment 2', completed: false },
-        { label: 'Quiz 1', completed: false },
-        { label: 'Quiz 2', completed: false }
-      ];
+      items = [{ label: 'Assignment 1', completed: false }, { label: 'Assignment 2', completed: false }, { label: 'Quiz 1', completed: false }, { label: 'Quiz 2', completed: false }];
     } else if (type === 'lab') {
-      items = [
-        { label: 'Lab Experiment 1', completed: false },
-        { label: 'Lab Experiment 2', completed: false },
-        { label: 'Lab Record', completed: false },
-        { label: 'Final Viva', completed: false }
-      ];
+      items = [{ label: 'Experiment 1', completed: false }, { label: 'Experiment 2', completed: false }, { label: 'Lab Record', completed: false }, { label: 'Final Viva', completed: false }];
     } else {
       items = customItems.map(item => ({ label: item, completed: false }));
     }
@@ -72,9 +62,7 @@ function App() {
       });
       setNewSubjectName('');
       setShowModal(null);
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) { console.error(e); }
   };
 
   const toggleItem = async (subjectId, itemIndex) => {
@@ -97,36 +85,30 @@ function App() {
       <div className="glass-card p-10 max-w-md w-full text-center fade-in">
         <div className="float mb-6"><GraduationCap size={72} className="text-primary mx-auto" /></div>
         <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">StudyTrack</h1>
-        <p className="text-text-muted mb-10 text-lg">Your academic workspace, reimagined.</p>
+        <p className="text-text-muted mb-10 text-lg">Your intellectual journey, organized.</p>
         <button onClick={login} className="btn-primary w-full justify-center py-4">Sign in with Google</button>
       </div>
     </div>
   );
 
-  const filteredSubjects = subjects.filter(s => activeTab === 'home' || s.type === activeTab);
-
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
-      {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 bg-card border-r border-border p-6 flex flex-col gap-8 shadow-xl z-50">
+      {/* Sidebar Navigation (Desktop) */}
+      <aside className="hidden md:flex w-64 bg-card border-r border-border p-6 flex-col gap-8 shadow-xl z-50">
         <div className="flex items-center gap-3 px-2">
           <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-bg-dark font-bold shadow-lg">ST</div>
-          <span className="text-xl font-bold text-main">StudyTrack</span>
+          <span className="text-xl font-bold text-main">Atelier</span>
         </div>
-
         <nav className="flex flex-col gap-2">
-          <NavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<LayoutDashboard size={20} />} label="Dashboard" />
-          <NavItem active={activeTab === 'theory'} onClick={() => setActiveTab('theory')} icon={<BookOpen size={20} />} label="Theory Tracks" />
-          <NavItem active={activeTab === 'lab'} onClick={() => setActiveTab('lab')} icon={<Microscope size={20} />} label="Lab Sessions" />
-          <NavItem active={activeTab === 'other'} onClick={() => setActiveTab('other')} icon={<Settings size={20} />} label="Custom Tracks" />
+          <NavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<Home size={20} />} label="Home" />
+          <NavItem active={activeTab === 'subjects'} onClick={() => setActiveTab('subjects')} icon={<Layers size={20} />} label="Subjects" />
+          <NavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={20} />} label="Profile" />
         </nav>
-
         <div className="mt-auto flex flex-col gap-4">
           <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="btn-outline flex items-center justify-center gap-2 py-3">
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </button>
-          <button onClick={logout} className="text-text-muted hover:text-red-400 flex items-center gap-2 px-4 py-2 text-sm transition-colors">
+          <button onClick={logout} className="text-text-muted hover:text-red-400 flex items-center gap-2 px-4 py-2 text-sm transition-colors border-t border-border pt-4">
             <LogOut size={16} /> Sign Out
           </button>
         </div>
@@ -134,177 +116,191 @@ function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 p-6 md:p-12 overflow-y-auto">
-        <header className="mb-10 flex justify-between items-end">
-          <div>
-            <div className="text-primary font-bold uppercase tracking-widest text-xs mb-2">Category Workspace</div>
-            <h2 className="text-4xl font-bold capitalize text-main">{activeTab}</h2>
+        {/* Mobile Header */}
+        <div className="flex md:hidden justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full border-2 border-primary" />
+            <span className="font-bold text-main">Atelier Academic</span>
           </div>
-          {activeTab !== 'home' && (
-            <button onClick={() => setShowModal(activeTab)} className="btn-primary shadow-xl">
-              <Plus size={20} /> Create New {activeTab}
-            </button>
-          )}
-        </header>
-
-        {activeTab === 'home' && <HomeOverview subjects={subjects} onNavigate={setActiveTab} />}
-        
-        {activeTab !== 'home' && (
-          <div className="glass-card mb-10 p-6 flex items-start gap-4 border-l-4 border-primary bg-primary/5">
-            <Info className="text-primary mt-1" />
-            <div>
-              <h4 className="font-bold text-main">About {activeTab} Subjects</h4>
-              <p className="text-text-muted text-sm leading-relaxed max-w-2xl mt-1">
-                {activeTab === 'theory' && "Manage your theoretical lecture courses. Track assignments and quizzes to stay ahead of the curve."}
-                {activeTab === 'lab' && "Keep track of your practical experiments, weekly lab reports, and prepares for final vivas."}
-                {activeTab === 'other' && "Create fully custom tracking lists for projects, electives, or external certifications."}
-              </p>
-            </div>
-          </div>
-        )}
-
-        <div className="glass-card overflow-hidden">
-          <div className="bg-white/5 p-4 grid grid-cols-1 md:grid-cols-[1.5fr_3fr_1fr] border-b border-border font-bold text-sm uppercase tracking-wider text-text-muted">
-            <div className="px-4">Subject Information</div>
-            <div className="px-4">Milestones & Action Items</div>
-            <div className="px-4 text-center">Progress</div>
-          </div>
-          
-          {filteredSubjects.length === 0 ? (
-            <div className="p-24 text-center">
-              <BarChart3 size={48} className="mx-auto mb-4 text-text-muted opacity-20" />
-              <p className="text-text-muted italic">No trackable items found in this category.</p>
-              {activeTab !== 'home' && (
-                <button onClick={() => setShowModal(activeTab)} className="text-primary font-bold mt-4">+ Create your first {activeTab} track</button>
-              )}
-            </div>
-          ) : (
-            filteredSubjects.map(s => (
-              <div key={s.id} className="subject-row fade-in">
-                <div className="px-4">
-                  <div className={`badge badge-${s.type} mb-2 inline-block`}>{s.type}</div>
-                  <h3 className="text-xl font-bold text-main">{s.name}</h3>
-                </div>
-                <div className="px-4 task-grid">
-                  {s.items?.map((item, idx) => (
-                    <div 
-                      key={idx} 
-                      onClick={() => toggleItem(s.id, idx)}
-                      className={`task-chip ${item.completed ? 'completed' : ''}`}
-                    >
-                      {item.completed ? <Check size={12} /> : <div className="w-3 h-3 rounded-full border border-current opacity-40" />}
-                      {item.label}
-                    </div>
-                  ))}
-                </div>
-                <div className="px-4 flex items-center justify-center gap-6">
-                  <div className="text-right">
-                    <div className="text-primary font-bold text-xl">
-                      {Math.round((s.items?.filter(i => i.completed).length / s.items?.length) * 100 || 0)}%
-                    </div>
-                  </div>
-                  <button onClick={() => deleteSubject(s.id)} className="text-text-muted hover:text-red-400 p-2 transition-colors">
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
+          <Settings onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="text-text-muted" />
         </div>
+
+        {activeTab === 'home' && <HomeView subjects={subjects} user={user} />}
+        {activeTab === 'subjects' && <SubjectsView subjects={subjects} onAdd={setShowModal} onToggle={toggleItem} onDelete={deleteSubject} />}
+        {activeTab === 'profile' && <ProfileView user={user} logout={logout} />}
+
       </main>
 
+      {/* Bottom Nav (Mobile) */}
+      <div className="bottom-nav md:hidden">
+        <BottomNavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<Home size={24} />} label="Home" />
+        <BottomNavItem active={activeTab === 'subjects'} onClick={() => setActiveTab('subjects')} icon={<Layers size={24} />} label="Subjects" />
+        <BottomNavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={24} />} label="Profile" />
+      </div>
+
       {showModal && (
-        <div className="modal-overlay" onClick={(e) => e.target.className === 'modal-overlay' && setShowModal(null)}>
-          <div className="glass-card p-8 max-w-lg w-full relative">
-            <button onClick={() => setShowModal(null)} className="absolute top-6 right-6 text-text-muted hover:text-white"><X /></button>
-            <h2 className="text-2xl font-bold capitalize mb-8 text-main">Add {showModal} Track</h2>
-            
-            <div className="space-y-6">
-              <div>
-                <label className="block text-xs font-bold text-text-muted mb-2 uppercase tracking-widest">Subject Reference</label>
-                <input type="text" autoFocus placeholder="e.g. Operating Systems" className="w-full" value={newSubjectName} onChange={e => setNewSubjectName(e.target.value)} />
-              </div>
-
-              {showModal === 'other' && (
-                <div>
-                  <label className="block text-xs font-bold text-text-muted mb-2 uppercase tracking-widest">Custom Milestones</label>
-                  <div className="space-y-3 max-h-48 overflow-y-auto pr-2">
-                    {customItems.map((item, idx) => (
-                      <div key={idx} className="flex gap-2">
-                        <input type="text" className="flex-1 py-3 px-4 text-sm" value={item} onChange={e => {
-                          const newItems = [...customItems];
-                          newItems[idx] = e.target.value;
-                          setCustomItems(newItems);
-                        }} />
-                        <button onClick={() => setCustomItems(customItems.filter((_, i) => i !== idx))} className="btn-outline p-2 text-red-400 border-none"><Trash2 size={16}/></button>
-                      </div>
-                    ))}
-                  </div>
-                  <button onClick={() => setCustomItems([...customItems, 'New Milestone'])} className="text-sm text-primary flex items-center gap-2 mt-4 font-bold">
-                    <Plus size={14} /> Add Another
-                  </button>
-                </div>
-              )}
-
-              <button onClick={() => createSubject(showModal)} className="btn-primary w-full justify-center py-4 mt-8 shadow-lg">
-                Finalize {showModal} Subject
-              </button>
-            </div>
-          </div>
-        </div>
+        <CreationModal 
+          type={showModal} 
+          onClose={() => setShowModal(null)} 
+          onSubmit={createSubject} 
+          name={newSubjectName} 
+          setName={setNewSubjectName}
+          customItems={customItems}
+          setCustomItems={setCustomItems}
+        />
       )}
+    </div>
+  );
+}
+
+function HomeView({ subjects, user }) {
+  const totalItems = subjects.reduce((acc, s) => acc + (s.items?.length || 0), 0);
+  const completedItems = subjects.reduce((acc, s) => acc + (s.items?.filter(i => i.completed).length || 0), 0);
+  const progressPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  return (
+    <div className="fade-in">
+      <div className="text-text-muted uppercase tracking-widest text-xs font-bold mb-2">Curated Progress</div>
+      <h1 className="hero-title text-main">Master Your <br/> Intellectual <br/> Journey.</h1>
+
+      <div className="glass-card p-8 flex items-center gap-8 mb-10">
+        <div className="progress-circle" style={{ '--p': progressPercent }} data-label={`${progressPercent}%`}></div>
+        <div>
+          <div className="text-text-muted uppercase text-xs font-bold tracking-widest">Academic Standing</div>
+          <div className="text-3xl font-bold text-main mt-1">3.8 GPA</div>
+        </div>
+      </div>
+
+      <div className="cat-card border-l-8 border-primary-light">
+        <div className="cat-label text-primary-light" style={{ backgroundColor: 'rgba(251, 191, 36, 0.1)' }}>Humanities / Arts</div>
+        <h2 className="text-3xl font-bold text-main mb-3">Theory</h2>
+        <p className="text-text-muted">Deep conceptual frameworks, philosophy of science, and foundational literature analysis.</p>
+        <div className="mt-6 flex items-center justify-between">
+          <div className="flex -space-x-2">
+            {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-border border-2 border-bg-dark"></div>)}
+            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-[10px] text-bg-dark font-bold">+4</div>
+          </div>
+          <div className="text-xs text-text-muted font-bold uppercase">Active Researchers</div>
+        </div>
+      </div>
+
+      <div className="cat-card border-l-8 border-accent">
+        <div className="cat-label text-accent" style={{ backgroundColor: 'rgba(34, 211, 238, 0.1)' }}>Science / Logic</div>
+        <h2 className="text-3xl font-bold text-main mb-3">Lab</h2>
+        <p className="text-text-muted">Experimental data, chemical analysis, and real-time computation.</p>
+        <div className="mt-8">
+          <div className="w-full bg-border h-1.5 rounded-full overflow-hidden">
+            <div className="bg-accent h-full w-[40%]"></div>
+          </div>
+          <div className="text-xs text-accent font-bold uppercase mt-3 tracking-widest">12 Reports Pending</div>
+        </div>
+      </div>
+
+      <div className="stat-grid mb-10">
+        <StatCardCompact label="Credits" value="128" color="var(--primary)" />
+        <StatCardCompact label="Labs" value="14" color="var(--accent)" />
+        <StatCardCompact label="Thesis" value="01" color="var(--secondary)" />
+        <StatCardCompact label="Backlogs" value="00" color="#f87171" />
+      </div>
+    </div>
+  );
+}
+
+function SubjectsView({ subjects, onAdd, onToggle, onDelete }) {
+  return (
+    <div className="fade-in">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-bold text-main">My Courses</h2>
+        <div className="flex gap-2">
+          <button onClick={() => onAdd('theory')} className="p-3 bg-card border border-border rounded-xl text-primary"><BookOpen size={20}/></button>
+          <button onClick={() => onAdd('lab')} className="p-3 bg-card border border-border rounded-xl text-accent"><Microscope size={20}/></button>
+          <button onClick={() => onAdd('other')} className="p-3 bg-primary text-bg-dark rounded-xl"><Plus size={20}/></button>
+        </div>
+      </div>
+
+      <div className="glass-card overflow-hidden">
+        {subjects.length === 0 ? (
+          <div className="p-20 text-center text-text-muted">No courses tracked yet.</div>
+        ) : (
+          subjects.map(s => (
+            <div key={s.id} className="subject-row">
+              <div className="px-4">
+                <div className={`badge badge-${s.type} mb-2`}>{s.type}</div>
+                <h3 className="font-bold text-main">{s.name}</h3>
+              </div>
+              <div className="px-4 task-grid">
+                {s.items?.map((item, idx) => (
+                  <div key={idx} onClick={() => onToggle(s.id, idx)} className={`task-chip ${item.completed ? 'completed' : ''}`}>
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+              <div className="px-4 text-center">
+                <button onClick={() => onDelete(s.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16}/></button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ProfileView({ user, logout }) {
+  return (
+    <div className="fade-in text-center py-20">
+      <img src={user.photoURL} className="w-32 h-32 rounded-full border-4 border-primary mx-auto mb-6" alt="Profile" />
+      <h2 className="text-3xl font-bold text-main">{user.displayName}</h2>
+      <p className="text-text-muted mb-10">{user.email}</p>
+      <button onClick={logout} className="btn-primary mx-auto">Sign Out of Account</button>
     </div>
   );
 }
 
 function NavItem({ active, onClick, icon, label }) {
   return (
-    <button onClick={onClick} className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 ${active ? 'bg-primary text-bg-dark font-bold shadow-lg' : 'text-text-muted hover:bg-white/5 hover:text-main'}`}>
-      <div className="flex items-center gap-3">
-        {icon}
-        <span className="text-sm">{label}</span>
-      </div>
-      {active && <ChevronRight size={16} />}
+    <button onClick={onClick} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${active ? 'bg-primary text-bg-dark font-bold shadow-lg' : 'text-text-muted hover:bg-white/5 hover:text-main'}`}>
+      {icon} <span className="text-sm">{label}</span>
     </button>
   );
 }
 
-function HomeOverview({ subjects, onNavigate }) {
-  const totalItems = subjects.reduce((acc, s) => acc + (s.items?.length || 0), 0);
-  const completedItems = subjects.reduce((acc, s) => acc + (s.items?.filter(i => i.completed).length || 0), 0);
-  const totalPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
-
+function BottomNavItem({ active, onClick, icon, label }) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-      <div className="glass-card p-10 flex flex-col justify-center border-l-8 border-primary relative overflow-hidden">
-        <div className="text-primary font-bold uppercase tracking-tighter text-sm mb-4">Overall Completion</div>
-        <div className="text-7xl font-bold text-main mb-2">{totalPercent}%</div>
-        <div className="text-text-muted">Across all your registered tracks</div>
-        <BarChart3 className="absolute -right-8 -bottom-8 w-48 h-48 opacity-5 text-primary" />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <StatCard title="Theory" count={subjects.filter(s => s.type === 'theory').length} icon={<BookOpen className="text-primary" />} onClick={() => onNavigate('theory')} />
-        <StatCard title="Lab" count={subjects.filter(s => s.type === 'lab').length} icon={<Microscope className="text-accent" />} onClick={() => onNavigate('lab')} />
-        <StatCard title="Custom" count={subjects.filter(s => s.type === 'other').length} icon={<Settings className="text-secondary" />} onClick={() => onNavigate('other')} />
-        <div className="glass-card p-6 flex flex-col justify-center items-center text-center">
-          <div className="text-3xl font-bold text-main">{subjects.length}</div>
-          <div className="text-xs text-text-muted uppercase font-bold tracking-widest mt-1">Total Tracks</div>
-        </div>
-      </div>
+    <div onClick={onClick} className={`bottom-nav-item ${active ? 'active' : ''}`}>
+      {icon} <span>{label}</span>
     </div>
   );
 }
 
-function StatCard({ title, count, icon, onClick }) {
+function StatCardCompact({ label, value, color }) {
   return (
-    <div onClick={onClick} className="glass-card p-6 flex flex-col gap-3 cursor-pointer hover:border-primary transition-all">
-      <div className="flex justify-between items-start">
-        {icon}
-        <ChevronRight size={16} className="text-text-muted" />
-      </div>
-      <div>
-        <div className="text-2xl font-bold text-main">{count}</div>
-        <div className="text-xs text-text-muted uppercase font-bold tracking-widest">{title}</div>
+    <div className="stat-card" style={{ borderLeftColor: color }}>
+      <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1">{label}</div>
+      <div className="text-2xl font-bold text-main">{value}</div>
+    </div>
+  );
+}
+
+function CreationModal({ type, onClose, onSubmit, name, setName, customItems, setCustomItems }) {
+  return (
+    <div className="modal-overlay" onClick={e => e.target.className === 'modal-overlay' && onClose()}>
+      <div className="glass-card p-8 max-w-lg w-full relative">
+        <h2 className="text-2xl font-bold capitalize mb-6 text-main">New {type}</h2>
+        <input type="text" autoFocus className="w-full mb-6" placeholder="Subject Name" value={name} onChange={e => setName(e.target.value)} />
+        {type === 'other' && (
+          <div className="space-y-3 mb-6">
+            {customItems.map((it, idx) => (
+              <div key={idx} className="flex gap-2">
+                <input className="flex-1 py-2 px-3 text-sm" value={it} onChange={e => {
+                  const n = [...customItems]; n[idx] = e.target.value; setCustomItems(n);
+                }} />
+              </div>
+            ))}
+            <button onClick={() => setCustomItems([...customItems, 'New Milestone'])} className="text-xs text-primary font-bold">+ Add Milestone</button>
+          </div>
+        )}
+        <button onClick={() => onSubmit(type)} className="btn-primary w-full justify-center">Initialize Track</button>
       </div>
     </div>
   );
