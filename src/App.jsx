@@ -5,7 +5,8 @@ import { collection, query, where, onSnapshot, addDoc, deleteDoc, doc, updateDoc
 import { 
   Plus, Trash2, LogOut, GraduationCap, BookOpen, 
   Microscope, Settings, X, Check, LayoutDashboard, 
-  Home, Layers, User as UserIcon, Bell, Star, ChevronRight
+  Moon, Sun, Info, ChevronRight, BarChart3, Home, 
+  Layers, User as UserIcon, Bell
 } from 'lucide-react';
 
 function App() {
@@ -13,11 +14,14 @@ function App() {
   const [subjects, setSubjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('home');
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-  const [selectedSubjectDetail, setSelectedSubjectDetail] = useState(null);
+  const [theme, setTheme] = useState('dark');
   const [showModal, setShowModal] = useState(null);
   const [newSubjectName, setNewSubjectName] = useState('');
   const [customItems, setCustomItems] = useState(['Assignment 1']);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   useEffect(() => {
     getRedirectResult(auth).catch(e => console.error("Auth error", e));
@@ -41,7 +45,7 @@ function App() {
     if (!newSubjectName.trim()) return;
     let items = [];
     if (type === 'theory') {
-      items = [{ label: 'Assigment 1', completed: false }, { label: 'Assignment 2', completed: false }, { label: 'Quiz 1', completed: false }, { label: 'Quiz 2', completed: false }];
+      items = [{ label: 'Assignment 1', completed: false }, { label: 'Assignment 2', completed: false }, { label: 'Quiz 1', completed: false }, { label: 'Quiz 2', completed: false }];
     } else if (type === 'lab') {
       items = [{ label: 'Experiment 1', completed: false }, { label: 'Experiment 2', completed: false }, { label: 'Lab Record', completed: false }, { label: 'Final Viva', completed: false }];
     } else {
@@ -63,49 +67,45 @@ function App() {
 
   const toggleItem = async (subjectId, itemIndex) => {
     const subject = subjects.find(s => s.id === subjectId);
-    if (!subject) return;
     const newItems = [...subject.items];
     newItems[itemIndex].completed = !newItems[itemIndex].completed;
     await updateDoc(doc(db, 'subjects', subjectId), { items: newItems });
   };
 
-  const deleteSubject = (id) => {
-    deleteDoc(doc(db, 'subjects', id));
-    setSelectedSubjectDetail(null);
-  };
+  const deleteSubject = (id) => deleteDoc(doc(db, 'subjects', id));
 
   if (loading) return (
-    <div className="flex items-center justify-center min-h-screen bg-[#0a0e14]">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-[#facc15]"></div>
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-primary"></div>
     </div>
   );
 
   if (!user) return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-[#0a0e14]">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className="glass-card p-10 max-w-md w-full text-center fade-in">
-        <div className="float mb-6"><GraduationCap size={72} className="text-[#facc15] mx-auto" /></div>
-        <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#facc15] to-[#fef08a]">StudyTrack</h1>
-        <p className="text-[#94a3b8] mb-10 text-lg">Intellectual Atelier for Knowledge Seekers.</p>
-        <button onClick={login} className="btn-primary w-full justify-center py-4 bg-[#facc15] text-[#0a0e14]">Sign in with Google</button>
+        <div className="float mb-6"><GraduationCap size={72} className="text-primary mx-auto" /></div>
+        <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">StudyTrack</h1>
+        <p className="text-text-muted mb-10 text-lg">Your intellectual journey, organized.</p>
+        <button onClick={login} className="btn-primary w-full justify-center py-4">Sign in with Google</button>
       </div>
     </div>
   );
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#0a0e14]">
-      {/* Sidebar Navigation */}
-      <aside className="hidden md:flex w-64 bg-[#161b22]/50 border-r border-white/5 p-6 flex-col gap-8 shadow-xl z-50">
+    <div className="flex flex-col md:flex-row min-h-screen">
+      {/* Sidebar Navigation (Desktop) */}
+      <aside className="hidden md:flex w-64 bg-card border-r border-border p-6 flex-col gap-8 shadow-xl z-50">
         <div className="flex items-center gap-3 px-2">
-          <div className="w-10 h-10 bg-[#facc15] rounded-xl flex items-center justify-center text-[#0a0e14] font-bold shadow-lg">AA</div>
-          <span className="text-xl font-bold text-[#facc15]">Atelier</span>
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-bg-dark font-bold shadow-lg">ST</div>
+          <span className="text-xl font-bold text-main">Atelier</span>
         </div>
         <nav className="flex flex-col gap-2">
-          <NavItem active={activeTab === 'home'} onClick={() => { setActiveTab('home'); setSelectedSubCategory(null); setSelectedSubjectDetail(null); }} icon={<Home size={20} />} label="Home" />
-          <NavItem active={activeTab === 'subjects'} onClick={() => { setActiveTab('subjects'); setSelectedSubCategory(null); setSelectedSubjectDetail(null); }} icon={<Layers size={20} />} label="Curriculum" />
+          <NavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<Home size={20} />} label="Home" />
+          <NavItem active={activeTab === 'subjects'} onClick={() => setActiveTab('subjects')} icon={<Layers size={20} />} label="Subjects" />
           <NavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={20} />} label="Profile" />
         </nav>
-        <div className="mt-auto pt-4 border-t border-white/5">
-          <button onClick={logout} className="text-[#94a3b8] hover:text-[#fb7185] flex items-center gap-2 px-4 py-2 text-sm transition-colors w-full">
+        <div className="mt-auto flex flex-col gap-4">
+          <button onClick={logout} className="text-text-muted hover:text-red-400 flex items-center gap-2 px-4 py-2 text-sm transition-colors pt-4">
             <LogOut size={16} /> Sign Out
           </button>
         </div>
@@ -115,44 +115,21 @@ function App() {
       <main className="flex-1 p-6 md:p-12 overflow-y-auto">
         <div className="flex md:hidden justify-between items-center mb-6">
           <div className="flex items-center gap-3">
-            <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full border-2 border-[#facc15]" />
-            <span className="font-bold text-[#facc15]">Atelier Academic</span>
+            <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full border-2 border-primary" />
+            <span className="font-bold text-main">Atelier Academic</span>
           </div>
-          <Star className="text-[#facc15] animate-pulse" />
         </div>
 
-        {activeTab === 'home' && <HomeView subjects={subjects} user={user} onNavigateCategory={(cat) => { setActiveTab('subjects'); setSelectedSubCategory(cat); }} />}
-        
-        {activeTab === 'subjects' && (
-          <div className="fade-in">
-            {!selectedSubCategory ? (
-              <CurriculumOverview subjects={subjects} onSelectCategory={setSelectedSubCategory} />
-            ) : !selectedSubjectDetail ? (
-              <CategoryGridView 
-                type={selectedSubCategory} 
-                subjects={subjects.filter(s => s.type === selectedSubCategory)} 
-                onSelectSubject={setSelectedSubjectDetail}
-                onBack={() => setSelectedSubCategory(null)}
-                onAdd={() => setShowModal(selectedSubCategory)}
-              />
-            ) : (
-              <SubjectDetailView 
-                subject={subjects.find(s => s.id === selectedSubjectDetail)}
-                onBack={() => setSelectedSubjectDetail(null)}
-                onToggle={toggleItem}
-                onDelete={deleteSubject}
-              />
-            )}
-          </div>
-        )}
-
+        {activeTab === 'home' && <HomeView subjects={subjects} user={user} />}
+        {activeTab === 'subjects' && <SubjectsView subjects={subjects} onAdd={setShowModal} onToggle={toggleItem} onDelete={deleteSubject} />}
         {activeTab === 'profile' && <ProfileView user={user} logout={logout} />}
+
       </main>
 
       {/* Bottom Nav (Mobile) */}
-      <div className="bottom-nav md:hidden bg-[#161b22]/90 border-t border-white/5">
-        <BottomNavItem active={activeTab === 'home'} onClick={() => { setActiveTab('home'); setSelectedSubCategory(null); setSelectedSubjectDetail(null); }} icon={<Home size={24} />} label="Home" />
-        <BottomNavItem active={activeTab === 'subjects'} onClick={() => { setActiveTab('subjects'); setSelectedSubCategory(null); setSelectedSubjectDetail(null); }} icon={<Layers size={24} />} label="Subjects" />
+      <div className="bottom-nav md:hidden">
+        <BottomNavItem active={activeTab === 'home'} onClick={() => setActiveTab('home')} icon={<Home size={24} />} label="Home" />
+        <BottomNavItem active={activeTab === 'subjects'} onClick={() => setActiveTab('subjects')} icon={<Layers size={24} />} label="Subjects" />
         <BottomNavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={24} />} label="Profile" />
       </div>
 
@@ -171,205 +148,167 @@ function App() {
   );
 }
 
-function HomeView({ subjects, user, onNavigateCategory }) {
+function HomeView({ subjects, user }) {
   const totalItems = subjects.reduce((acc, s) => acc + (s.items?.length || 0), 0);
   const completedItems = subjects.reduce((acc, s) => acc + (s.items?.filter(i => i.completed).length || 0), 0);
   const progressPercent = totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
 
   return (
-    <div className="fade-in max-w-5xl mx-auto">
-      <div className="text-[#94a3b8] uppercase tracking-widest text-[10px] font-black mb-3">Academic Excellence</div>
-      <h1 className="hero-title text-[#f1f5f9] mb-12">Master Your <br/> Intellectual <br/> Journey.</h1>
+    <div className="fade-in">
+      <div className="text-text-muted uppercase tracking-widest text-xs font-bold mb-2">Curated Progress</div>
+      <h1 className="hero-title text-main">Master Your <br/> Intellectual <br/> Journey.</h1>
 
-      <div className="glass-card p-10 flex flex-col md:flex-row items-center gap-10 mb-14 bg-[#161b22]/70 border-white/5 shadow-2xl">
-        <div className="progress-circle shadow-[0_0_30px_rgba(250,204,21,0.2)]" style={{ '--p': progressPercent }} data-label={`${progressPercent}%`}></div>
+      <div className="glass-card p-8 flex items-center gap-8 mb-10">
+        <div className="progress-circle" style={{ '--p': progressPercent }} data-label={`${progressPercent}%`}></div>
         <div>
-          <div className="text-[#94a3b8] uppercase text-xs font-black tracking-widest mb-1">Academic Standing</div>
-          <div className="text-4xl font-bold text-[#f1f5f9] mb-2">3.8 GPA</div>
-          <div className="flex items-center gap-2 text-[#34d399] text-sm font-bold">
-            <Check size={16}/> Top 2% of the Atelier
-          </div>
+          <div className="text-text-muted uppercase text-xs font-bold tracking-widest">Academic Standing</div>
+          <div className="text-3xl font-bold text-main mt-1">3.8 GPA</div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
-        <CategoryCard type="theory" label="Arts & Logic" title="Theory" desc="Deep conceptual frameworks and philosophy of science." color="#facc15" bg="rgba(250, 204, 21, 0.1)" onClick={() => onNavigateCategory('theory')} />
-        <CategoryCard type="lab" label="Science / Logic" title="Lab" desc="Experimental data and real-time computation." color="#22d3ee" bg="rgba(34, 211, 238, 0.1)" onClick={() => onNavigateCategory('lab')} />
-        <CategoryCard type="other" label="Interdisciplinary" title="Other" desc="Custom tracking for autonomous studies." color="#fb7185" bg="rgba(251, 113, 133, 0.1)" onClick={() => onNavigateCategory('other')} />
-      </div>
-
-      <div className="highlight-banner border-white/5 shadow-2xl">
-        <div className="cat-label text-white bg-[#34d399] mb-4 inline-block font-black shadow-lg">HIGHLIGHT</div>
-        <h2 className="text-3xl font-black text-white mb-2 tracking-tight">Weekly Scholarly Seminar</h2>
-        <p className="text-white/80 text-sm max-w-sm font-medium leading-relaxed">Join the curated discussion on foundational literature analysis every Friday at the Atelier.</p>
-      </div>
-
-      <div className="quote-card mb-24 border-l-4 border-[#22d3ee] bg-[#161b22]/50 shadow-xl">
-        <p className="text-xl text-[#f1f5f9] font-medium italic leading-relaxed mb-6">"The unexamined subject is not worth studying. This atelier provides the digital lens through which your intellectual growth becomes tangible."</p>
-        <button className="btn-glass bg-white/5 hover:bg-[#facc15] hover:text-[#0a0e14]">Initialize Default Values</button>
-      </div>
-    </div>
-  );
-}
-
-function CurriculumOverview({ subjects, onSelectCategory }) {
-  return (
-    <div className="fade-in max-w-5xl mx-auto text-center md:text-left">
-      <h2 className="text-4xl font-black text-[#f1f5f9] mb-4">Curriculum</h2>
-      <p className="text-[#94a3b8] mb-12 max-w-xl mx-auto md:mx-0">Explore the foundations of human thought through our curated modules. Track progression across core disciplines.</p>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-        <LargeCurriculumLink title="Theory Subjects" count={subjects.filter(s=>s.type==='theory').length} color="#facc15" onClick={()=>onSelectCategory('theory')} />
-        <LargeCurriculumLink title="Lab Sessions" count={subjects.filter(s=>s.type==='lab').length} color="#22d3ee" onClick={()=>onSelectCategory('lab')} />
-        <LargeCurriculumLink title="Custom Tracks" count={subjects.filter(s=>s.type==='other').length} color="#fb7185" onClick={()=>onSelectCategory('other')} />
-      </div>
-    </div>
-  );
-}
-
-function LargeCurriculumLink({ title, count, color, onClick }) {
-  return (
-    <div onClick={onClick} className="glass-card p-10 cursor-pointer hover:border-primary transition-all group border-l-4 bg-[#161b22]/50" style={{ borderLeftColor: color }}>
-      <div className="flex justify-between items-start mb-6">
-        <div className="p-4 bg-white/5 rounded-2xl group-hover:bg-[#facc15]/10 transition-colors"><Layers size={32} style={{ color: color }}/></div>
-        <ChevronRight className="text-text-muted group-hover:translate-x-1 transition-transform" />
-      </div>
-      <h3 className="text-2xl font-bold text-[#f1f5f9] mb-2">{title}</h3>
-      <div className="text-[#94a3b8] uppercase text-[10px] font-black tracking-widest">{count} Tracks Active</div>
-    </div>
-  );
-}
-
-function CategoryGridView({ type, subjects, onSelectSubject, onBack, onAdd }) {
-  return (
-    <div className="fade-in max-w-5xl mx-auto">
-      <button onClick={onBack} className="text-[#94a3b8] flex items-center gap-2 mb-8 hover:text-[#facc15] transition-colors uppercase text-xs font-black tracking-widest"><ChevronRight size={16} className="rotate-180"/> Back to Overview</button>
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
-        <div>
-          <h2 className="text-4xl font-black text-[#f1f5f9] capitalize mb-3">{type} Subjects</h2>
-          <p className="text-[#94a3b8] max-w-sm">Curating and tracking your cognitive progression across core disciplines.</p>
-        </div>
-        <button onClick={onAdd} className="btn-primary shadow-[0_0_20px_rgba(250,204,21,0.3)]"><Plus size={20}/> New Subject</button>
-      </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-        {subjects.map(s => {
-          const completed = s.items?.filter(i=>i.completed).length || 0;
-          const total = s.items?.length || 1;
-          const pct = Math.round((completed/total)*100);
-          return (
-            <div key={s.id} onClick={() => onSelectSubject(s.id)} className="subject-card-small flex flex-row items-center gap-6 text-left group hover:scale-105">
-              <div className="mini-progress flex-shrink-0" style={{ '--p': pct }} data-label={`${pct}%`}></div>
-              <h3 className="font-bold text-[#f1f5f9] text-xl group-hover:text-[#facc15] transition-colors">{s.name}</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div className="cat-card" style={{ padding: '30px', margin: 0 }}>
+          <div className="cat-label text-primary" style={{ backgroundColor: 'rgba(192, 132, 252, 0.1)' }}>Humanities / Arts</div>
+          <h2 className="text-3xl font-bold text-main mb-3">Theory</h2>
+          <p className="text-text-muted">Deep conceptual frameworks, philosophy of science, and foundational literature analysis.</p>
+          <div className="mt-6 flex items-center justify-between">
+            <div className="flex -space-x-2">
+              {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-border border-2 border-bg-dark"></div>)}
+              <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-[10px] text-bg-dark font-bold">+4</div>
             </div>
-          );
-        })}
-        {subjects.length === 0 && <div className="col-span-full p-24 text-center glass-card text-[#94a3b8] italic">No tracks found.</div>}
-      </div>
-    </div>
-  );
-}
+            <div className="text-xs text-text-muted font-bold uppercase">Active Researchers</div>
+          </div>
+        </div>
 
-function SubjectDetailView({ subject, onBack, onToggle, onDelete }) {
-  if (!subject) return null;
-  return (
-    <div className="fade-in max-w-5xl mx-auto">
-      <button onClick={onBack} className="text-[#94a3b8] flex items-center gap-2 mb-8 hover:text-[#facc15] transition-colors uppercase text-xs font-black tracking-widest"><ChevronRight size={16} className="rotate-180"/> Back to Grid</button>
-      <div className="glass-card overflow-hidden bg-[#161b22]/70 border-white/5">
-        <div className="p-10 border-b border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="cat-card" style={{ padding: '30px', margin: 0 }}>
+          <div className="cat-label text-accent" style={{ backgroundColor: 'rgba(74, 222, 128, 0.1)' }}>Science / Logic</div>
+          <h2 className="text-3xl font-bold text-main mb-3">Lab</h2>
+          <p className="text-text-muted">Experimental data, chemical analysis, and real-time computation.</p>
+          <div className="mt-8">
+            <div className="w-full bg-border h-1.5 rounded-full overflow-hidden">
+              <div className="bg-accent h-full w-[40%]"></div>
+            </div>
+            <div className="text-xs text-accent font-bold uppercase mt-3 tracking-widest">12 Reports Pending</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="cat-card flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10" style={{ padding: '24px' }}>
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-white/5 rounded-xl text-text-muted"><LayoutDashboard size={24}/></div>
           <div>
-            <div className="cat-label bg-[#facc15]/10 text-[#facc15] mb-2 inline-block font-black text-[10px] tracking-widest uppercase py-1 px-3 rounded-md">{subject.type}</div>
-            <h1 className="text-4xl font-black text-[#f1f5f9]">{subject.name}</h1>
-          </div>
-          <button onClick={() => onDelete(subject.id)} className="p-4 bg-red-400/5 text-red-400 rounded-2xl hover:bg-red-400/10 transition-all"><Trash2/></button>
-        </div>
-        <div className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {subject.items?.map((item, idx) => (
-              <div key={idx} onClick={() => onToggle(subject.id, idx)} className={`p-8 rounded-2xl flex items-center justify-between cursor-pointer transition-all border ${item.completed ? 'bg-[#34d399]/10 border-[#34d399]/30' : 'bg-white/5 border-white/5 hover:border-[#facc15]'}`}>
-                <div className="flex items-center gap-6">
-                  <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all ${item.completed ? 'bg-[#34d399] border-[#34d399]' : 'border-white/20'}`}>
-                    {item.completed && <Check size={16} className="text-[#0a0e14] font-black"/>}
-                  </div>
-                  <span className={`text-lg font-bold ${item.completed ? 'text-[#34d399] line-through opacity-50' : 'text-[#f1f5f9]'}`}>{item.label}</span>
-                </div>
-              </div>
-            ))}
+            <h2 className="text-xl font-bold text-main">Other / Custom</h2>
+            <p className="text-sm text-text-muted">Interdisciplinary electives, independent studies, and capstone projects.</p>
           </div>
         </div>
+        <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:scale-105 transition-transform" style={{ whiteSpace: 'nowrap' }}>Initialize Default Values</button>
+      </div>
+
+      <div className="stat-grid mb-10">
+        <StatCardCompact label="Credits" value="128" color="var(--primary)" />
+        <StatCardCompact label="Labs" value="14" color="var(--accent)" />
+        <StatCardCompact label="Thesis" value="01" color="var(--secondary)" />
+        <StatCardCompact label="Backlogs" value="00" color="#f87171" />
       </div>
     </div>
   );
 }
 
-function CategoryCard({ label, title, desc, color, bg, onClick }) {
+function SubjectsView({ subjects, onAdd, onToggle, onDelete }) {
   return (
-    <div onClick={onClick} className="cat-card border-l-4 cursor-pointer hover:scale-[1.02] transition-transform shadow-2xl h-full flex flex-col bg-[#161b22]/70" style={{ borderLeftColor: color }}>
-      <div className="cat-label text-[10px] uppercase tracking-widest font-black mb-4 inline-block px-3 py-1 rounded" style={{ color: color, backgroundColor: bg }}>{label}</div>
-      <h2 className="text-2xl font-black text-[#f1f5f9] mb-3">{title}</h2>
-      <p className="text-[#94a3b8] text-sm leading-relaxed mb-8 flex-1 font-medium">{desc}</p>
-      <div className="flex items-center gap-2 text-[#facc15] font-black text-[10px] uppercase tracking-widest mt-auto">Details <ChevronRight size={14} /></div>
-    </div>
-  );
-}
+    <div className="fade-in">
+      <div className="flex justify-between items-center mb-8">
+        <h2 className="text-3xl font-bold text-main">My Courses</h2>
+        <div className="flex gap-2">
+          <button onClick={() => onAdd('theory')} className="p-3 bg-card border border-border rounded-xl text-primary"><BookOpen size={20}/></button>
+          <button onClick={() => onAdd('lab')} className="p-3 bg-card border border-border rounded-xl text-accent"><Microscope size={20}/></button>
+          <button onClick={() => onAdd('other')} className="p-3 bg-primary text-bg-dark rounded-xl"><Plus size={20}/></button>
+        </div>
+      </div>
 
-function NavItem({ active, onClick, icon, label }) {
-  return (
-    <button onClick={onClick} className={`flex items-center gap-4 px-6 py-4 rounded-xl transition-all ${active ? 'bg-[#facc15] text-[#0a0e14] font-black shadow-xl scale-105' : 'text-[#94a3b8] hover:bg-white/5 hover:text-[#facc15]'}`}>
-      {icon} <span className="text-sm uppercase tracking-widest font-bold">{label}</span>
-    </button>
-  );
-}
-
-function BottomNavItem({ active, onClick, icon, label }) {
-  return (
-    <div onClick={onClick} className={`bottom-nav-item py-1 ${active ? 'active' : ''}`}>
-      {icon} <span className="font-black text-[9px] mt-1">{label}</span>
+      <div className="glass-card overflow-hidden">
+        {subjects.length === 0 ? (
+          <div className="p-20 text-center text-text-muted">No courses tracked yet.</div>
+        ) : (
+          subjects.map(s => (
+            <div key={s.id} className="subject-row">
+              <div className="px-4">
+                <div className={`badge badge-${s.type} mb-2`}>{s.type}</div>
+                <h3 className="font-bold text-main">{s.name}</h3>
+              </div>
+              <div className="px-4 task-grid">
+                {s.items?.map((item, idx) => (
+                  <div key={idx} onClick={() => onToggle(s.id, idx)} className={`task-chip ${item.completed ? 'completed' : ''}`}>
+                    {item.label}
+                  </div>
+                ))}
+              </div>
+              <div className="px-4 text-center">
+                <button onClick={() => onDelete(s.id)} className="text-text-muted hover:text-red-400"><Trash2 size={16}/></button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
 
 function ProfileView({ user, logout }) {
   return (
-    <div className="fade-in text-center py-24 max-w-xl mx-auto">
-      <div className="relative inline-block mb-10">
-        <img src={user.photoURL} className="w-40 h-40 rounded-full border-4 border-[#facc15] p-2 shadow-2xl mx-auto" alt="Profile" />
-        <div className="absolute -bottom-2 -right-2 bg-[#facc15] p-3 rounded-full shadow-lg"><Star size={24} className="text-[#0a0e14]"/></div>
-      </div>
-      <h2 className="text-4xl font-black text-[#f1f5f9] mb-2">{user.displayName}</h2>
-      <p className="text-[#94a3b8] text-lg font-medium mb-12">{user.email}</p>
-      <button onClick={logout} className="btn-primary mx-auto px-12 py-5 shadow-[0_0_30px_rgba(250,204,21,0.2)]">Sign Out of Atelier</button>
+    <div className="fade-in text-center py-20">
+      <img src={user.photoURL} className="w-32 h-32 rounded-full border-4 border-primary mx-auto mb-6" alt="Profile" />
+      <h2 className="text-3xl font-bold text-main">{user.displayName}</h2>
+      <p className="text-text-muted mb-10">{user.email}</p>
+      <button onClick={logout} className="btn-primary mx-auto">Sign Out of Account</button>
+    </div>
+  );
+}
+
+function NavItem({ active, onClick, icon, label }) {
+  return (
+    <button onClick={onClick} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${active ? 'bg-primary text-bg-dark font-bold shadow-lg' : 'text-text-muted hover:bg-white/5 hover:text-main'}`}>
+      {icon} <span className="text-sm">{label}</span>
+    </button>
+  );
+}
+
+function BottomNavItem({ active, onClick, icon, label }) {
+  return (
+    <div onClick={onClick} className={`bottom-nav-item ${active ? 'active' : ''}`}>
+      {icon} <span>{label}</span>
+    </div>
+  );
+}
+
+function StatCardCompact({ label, value, color }) {
+  return (
+    <div className="stat-card" style={{ borderLeftColor: color }}>
+      <div className="text-[10px] text-text-muted uppercase font-bold tracking-widest mb-1">{label}</div>
+      <div className="text-2xl font-bold text-main">{value}</div>
     </div>
   );
 }
 
 function CreationModal({ type, onClose, onSubmit, name, setName, customItems, setCustomItems }) {
   return (
-    <div className="modal-overlay z-[2000] p-4" onClick={e => e.target.className === 'modal-overlay' && onClose()}>
-      <div className="glass-card p-10 max-w-lg w-full relative bg-[#161b22] border-[#facc15]/20 shadow-[0_40px_100px_rgba(0,0,0,0.9)] animate-in fade-in zoom-in duration-300">
-        <h2 className="text-3xl font-black capitalize mb-8 text-[#f1f5f9] tracking-tight">Initialize {type}</h2>
-        <div className="space-y-8">
-          <div>
-            <label className="text-xs font-black text-[#94a3b8] uppercase tracking-widest block mb-3">Module Identity</label>
-            <input type="text" autoFocus className="w-full bg-white/5 border-white/10 text-white rounded-xl py-4 px-6 focus:border-[#facc15] outline-none transition-all" placeholder="e.g. Theoretical Physics" value={name} onChange={e => setName(e.target.value)} />
-          </div>
-          {type === 'other' && (
-            <div>
-              <label className="text-xs font-black text-[#94a3b8] uppercase tracking-widest block mb-4">Milestone Architecture</label>
-              <div className="space-y-3 max-h-56 overflow-y-auto pr-2 custom-scrollbar">
-                {customItems.map((it, idx) => (
-                  <div key={idx} className="flex gap-2">
-                    <input className="flex-1 py-3 px-4 bg-white/5 border-white/5 text-white rounded-lg text-sm" value={it} onChange={e => {
-                      const n = [...customItems]; n[idx] = e.target.value; setCustomItems(n);
-                    }} />
-                  </div>
-                ))}
+    <div className="modal-overlay" onClick={e => e.target.className === 'modal-overlay' && onClose()}>
+      <div className="glass-card p-8 max-w-lg w-full relative">
+        <h2 className="text-2xl font-bold capitalize mb-6 text-main">New {type}</h2>
+        <input type="text" autoFocus className="w-full mb-6" placeholder="Subject Name" value={name} onChange={e => setName(e.target.value)} />
+        {type === 'other' && (
+          <div className="space-y-3 mb-6">
+            {customItems.map((it, idx) => (
+              <div key={idx} className="flex gap-2">
+                <input className="flex-1 py-2 px-3 text-sm" value={it} onChange={e => {
+                  const n = [...customItems]; n[idx] = e.target.value; setCustomItems(n);
+                }} />
               </div>
-              <button onClick={() => setCustomItems([...customItems, 'New Milestone'])} className="text-[10px] text-[#facc15] font-black uppercase tracking-widest mt-4 flex items-center gap-2">+ Add Milestone</button>
-            </div>
-          )}
-          <button onClick={() => onSubmit(type)} className="btn-primary w-full justify-center py-5 text-lg shadow-[0_0_30px_rgba(250,204,21,0.2)]">Begin Track</button>
-        </div>
+            ))}
+            <button onClick={() => setCustomItems([...customItems, 'New Milestone'])} className="text-xs text-primary font-bold">+ Add Milestone</button>
+          </div>
+        )}
+        <button onClick={() => onSubmit(type)} className="btn-primary w-full justify-center">Initialize Track</button>
       </div>
     </div>
   );

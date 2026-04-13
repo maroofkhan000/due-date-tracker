@@ -1,19 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Exact Stitch Design Palette (Intellectual Atelier) */
-  --bg-dark: #0a0e14;
-  --bg-card: rgba(22, 27, 34, 0.7);
-  --primary: #facc15; /* Vibrant Stitch Yellow */
-  --primary-light: #fef08a;
-  --secondary: #fb7185;
-  --accent: #22d3ee;
-  --text-main: #facc15; 
-  --text-body: #f8fafc;
+  --bg-dark: #0b1120;
+  --bg-card: rgba(30, 41, 59, 1);
+  --primary: #c084fc; /* Purple */
+  --primary-light: #d8b4fe;
+  --secondary: #3b82f6; /* Blue */
+  --accent: #4ade80; /* Green */
+  --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.05);
   --success: #34d399;
-  --card-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 30px 60px -30px rgba(0, 0, 0, 0.9);
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -406,12 +404,13 @@ input[type="text"]:focus {
 /* Category Card Enhancements */
 .cat-card {
   padding: 30px;
-  border-radius: 24px;
+  border-radius: 20px;
   background: var(--bg-card);
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .cat-card .cat-label {
@@ -435,102 +434,6 @@ input[type="text"]:focus {
   .flex-row { flex-direction: column; }
   main { padding-bottom: 100px; }
   .hero-title { font-size: 2.2rem; }
-}
-
-/* Mini Progress Rings for Subject Cards */
-.mini-progress {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: conic-gradient(var(--primary) calc(var(--p) * 1%), rgba(255,255,255,0.05) 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-
-.mini-progress::after {
-  content: attr(data-label);
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  background: var(--bg-card);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.75rem;
-  color: var(--primary);
-}
-
-/* Curriculum Grid (2x2) */
-.curriculum-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 2rem;
-}
-
-.subject-card-small {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.subject-card-small:hover {
-  border-color: var(--primary);
-  transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-/* Highlight Banner */
-.highlight-banner {
-  background: linear-gradient(to right, rgba(0,0,0,0.8), transparent), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80');
-  background-size: cover;
-  background-position: center;
-  border-radius: 24px;
-  padding: 40px;
-  margin-bottom: 2rem;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  border: 1px solid var(--border);
-}
-
-.quote-card {
-  background: var(--bg-card);
-  border-radius: 24px;
-  padding: 30px;
-  border-left: 4px solid var(--accent);
-  font-style: italic;
-  line-height: 1.6;
-  color: #f1f5f9;
-}
-
-.btn-glass {
-  background: rgba(124, 58, 237, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(124, 58, 237, 0.3);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 600;
-  margin-top: 20px;
-  transition: all 0.3s ease;
-}
-
-.btn-glass:hover {
-  background: var(--primary);
-  color: var(--bg-dark);
 }
 
 .fade-in {
