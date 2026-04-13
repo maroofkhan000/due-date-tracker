@@ -16,14 +16,9 @@ function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedSubCategory, setSelectedSubCategory] = useState(null); // 'theory' | 'lab' | 'other'
   const [selectedSubjectDetail, setSelectedSubjectDetail] = useState(null); // Document ID
-  const [theme, setTheme] = useState('dark');
   const [showModal, setShowModal] = useState(null);
   const [newSubjectName, setNewSubjectName] = useState('');
   const [customItems, setCustomItems] = useState(['Assignment 1']);
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
 
   useEffect(() => {
     getRedirectResult(auth).catch(e => console.error("Auth error", e));
@@ -110,9 +105,9 @@ function App() {
           <NavItem active={activeTab === 'subjects'} onClick={() => { setActiveTab('subjects'); setSelectedSubCategory(null); setSelectedSubjectDetail(null); }} icon={<Layers size={20} />} label="Curriculum" />
           <NavItem active={activeTab === 'profile'} onClick={() => setActiveTab('profile')} icon={<UserIcon size={20} />} label="Profile" />
         </nav>
-        <div className="mt-auto flex flex-col gap-4">
-          <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="btn-outline flex items-center justify-center gap-2 py-3">
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+        <div className="mt-auto pt-4 border-t border-border">
+          <button onClick={logout} className="text-text-muted hover:text-red-400 flex items-center gap-2 px-4 py-2 text-sm transition-colors w-full">
+            <LogOut size={16} /> Sign Out
           </button>
         </div>
       </aside>
@@ -125,7 +120,7 @@ function App() {
             <img src={user.photoURL} alt="User" className="w-10 h-10 rounded-full border-2 border-primary" />
             <span className="font-bold text-main">Intellectual Atelier</span>
           </div>
-          <Settings onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="text-text-muted cursor-pointer" />
+          <Star className="text-primary animate-pulse" />
         </div>
 
         {activeTab === 'home' && <HomeView subjects={subjects} user={user} onNavigateCategory={(cat) => { setActiveTab('subjects'); setSelectedSubCategory(cat); }} />}

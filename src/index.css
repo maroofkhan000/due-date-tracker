@@ -1,29 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  /* Premium Light Theme */
-  --bg-dark: #f1f5f9;
-  --bg-card: rgba(255, 255, 255, 0.8);
-  --primary: #fbbf24;
-  --primary-light: #f59e0b;
-  --secondary: #6366f1;
-  --accent: #0ea5e9;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --border: rgba(0, 0, 0, 0.05);
-  --success: #10b981;
-  --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
-
-[data-theme='dark'] {
-  /* Premium Dark Theme with Yellow Highlights */
+  /* Permanent Intellectual Atelier Theme (Dark/Yellow) */
   --bg-dark: #020205;
   --bg-card: rgba(15, 15, 30, 0.6);
-  --primary: #fbbf24; /* Yellow as requested */
+  --primary: #fbbf24; /* Yellow Highlights */
   --primary-light: #fcd34d;
   --secondary: #ec4899;
   --accent: #22d3ee;
-  --text-main: #fbbf24; /* Yellow text for highlights */
+  --text-main: #fbbf24; /* Yellow text as requested */
+  --text-body: #f1f5f9;
   --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.08);
   --success: #10b981;
