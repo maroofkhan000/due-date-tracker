@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db, googleProvider } from './firebase';
-import { signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { 
   Bell, Settings, ArrowRight, 
@@ -13,19 +13,15 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
-    getRedirectResult(auth).catch(error => {
-      console.error("Redirect auth error:", error);
-    });
-
     const unsubscribe = onAuthStateChanged(auth, u => { setUser(u); setLoading(false); });
     return () => unsubscribe();
   }, []);
 
   const login = async () => {
     try {
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
     } catch (error) {
-      console.error("Login redirect failed:", error);
+      console.error("Login popup failed:", error);
     }
   };
 
