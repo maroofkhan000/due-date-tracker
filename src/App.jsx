@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db, googleProvider } from './firebase';
+import { auth, googleProvider } from './firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { collection, query, where, onSnapshot } from 'firebase/firestore';
-import { 
-  Bell, Settings, ArrowRight, 
-  Beaker, Plus
-} from 'lucide-react';
+import { Bell, Settings, ArrowRight, Plus } from 'lucide-react';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -13,7 +9,10 @@ function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, u => { setUser(u); setLoading(false); });
+    const unsubscribe = onAuthStateChanged(auth, u => {
+      setUser(u);
+      setLoading(false);
+    });
     return () => unsubscribe();
   }, []);
 
@@ -21,22 +20,22 @@ function App() {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
-      console.error("Login popup failed:", error);
+      console.error('Login failed:', error);
     }
   };
 
   if (loading) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-      <div className="animate-spin" style={{ borderRadius: '9999px', height: '3rem', width: '3rem', borderTop: '2px solid #00e5ff' }}></div>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#0f1524' }}>
+      <div className="animate-spin" style={{ width: '48px', height: '48px', borderRadius: '50%', border: '3px solid rgba(0,229,255,0.15)', borderTopColor: '#00e5ff' }}></div>
     </div>
   );
 
   if (!user) return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: '1rem' }}>
-      <div className="card fade-in" style={{ padding: '2.5rem', maxWidth: '28rem', width: '100%', textAlign: 'center' }}>
-        <h1 className="font-outfit" style={{ fontSize: '2.25rem', fontWeight: 700, marginBottom: '1rem', color: '#00e5ff', letterSpacing: '-0.025em' }}>Scholarly Atelier</h1>
-        <p style={{ color: '#94a3b8', marginBottom: '2.5rem', fontSize: '1.125rem' }}>Sign in to refine your curriculum.</p>
-        <button onClick={login} className="btn-cyan" style={{ width: '100%', display: 'flex', justifyContent: 'center', padding: '1rem' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#0f1524' }}>
+      <div className="card fade-in" style={{ padding: '2.5rem', maxWidth: '26rem', width: '100%', textAlign: 'center' }}>
+        <h1 className="font-outfit" style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '0.5rem' }}>Scholarly Atelier</h1>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Sign in to refine your curriculum.</p>
+        <button onClick={login} className="btn-cyan" style={{ width: '100%', justifyContent: 'center' }}>
           Sign in with Google
         </button>
       </div>
@@ -46,23 +45,30 @@ function App() {
   return (
     <>
       {/* Top Navbar */}
-      <nav className="navbar fade-in">
+      <nav className="navbar">
         <div className="nav-brand font-outfit">Scholarly Atelier</div>
         <div className="nav-links">
-          <button className={`nav-link ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
-          <button className={`nav-link ${activeTab === 'courses' ? 'active' : ''}`} onClick={() => setActiveTab('courses')}>Courses</button>
-          <button className={`nav-link ${activeTab === 'research' ? 'active' : ''}`} onClick={() => setActiveTab('research')}>Research</button>
-          <button className={`nav-link ${activeTab === 'schedule' ? 'active' : ''}`} onClick={() => setActiveTab('schedule')}>Schedule</button>
+          <a href="#" className={`nav-link${activeTab === 'dashboard' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('dashboard'); }}>Dashboard</a>
+          <a href="#" className={`nav-link${activeTab === 'courses' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('courses'); }}>Courses</a>
+          <a href="#" className={`nav-link${activeTab === 'research' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('research'); }}>Research</a>
+          <a href="#" className={`nav-link${activeTab === 'schedule' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('schedule'); }}>Schedule</a>
         </div>
         <div className="nav-actions">
-          <button className="nav-icon"><Bell size={20} fill="currentColor" /></button>
-          <button className="nav-icon"><Settings size={20} fill="currentColor" /></button>
-          <img src={user.photoURL} alt="User" className="avatar" title="Sign Out" onClick={() => signOut(auth)} style={{ cursor: 'pointer' }} />
+          <button className="nav-icon"><Bell size={20} /></button>
+          <button className="nav-icon"><Settings size={20} /></button>
+          <img
+            src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=0D8ABC&color=fff`}
+            alt="User"
+            className="avatar"
+            title="Sign Out"
+            onClick={() => signOut(auth)}
+            style={{ cursor: 'pointer' }}
+          />
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="container fade-in">
+      <main className="container">
         <header className="page-header">
           <h1 className="header-title font-outfit">Refine Your Curriculum</h1>
           <p className="header-desc">
@@ -75,18 +81,18 @@ function App() {
           <div className="card theory-card">
             <div className="theory-bg"></div>
             <div className="theory-gradient"></div>
-            
+
             <div className="theory-content">
               <div className="badge-row">
                 <span className="badge-magenta">THEORETICAL</span>
                 <span className="theory-subtitle">48 Modules Available</span>
               </div>
-              <h2 className="theory-title font-outfit">Principles & Analysis</h2>
+              <h2 className="theory-title font-outfit">Principles &amp; Analysis</h2>
               <p className="theory-desc">
                 Deep-dive into abstract frameworks, historical contexts, and critical literature reviews. Designed for extensive reading and synthesis.
               </p>
               <button className="btn-cyan">
-                Begin Theory Path <ArrowRight size={18} />
+                Begin Theory Path <ArrowRight style={{ width: '18px', height: '18px' }} />
               </button>
             </div>
           </div>
@@ -96,7 +102,9 @@ function App() {
             {/* Practice Card */}
             <div className="card practice-card">
               <div className="icon-box">
-                <Beaker size={22} fill="currentColor" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+                </svg>
               </div>
               <h3 className="card-title font-outfit">Laboratory Practice</h3>
               <p className="card-desc">
@@ -122,7 +130,7 @@ function App() {
               </p>
               <div className="custom-bottom" style={{ position: 'relative', zIndex: 2 }}>
                 <button className="btn-config">
-                  CONFIGURE NOW <Settings size={14} />
+                  CONFIGURE NOW <Settings style={{ width: '14px', height: '14px' }} />
                 </button>
               </div>
             </div>
@@ -151,7 +159,7 @@ function App() {
 
       {/* Floating Action Button */}
       <button className="fab">
-        <Plus size={26} strokeWidth={3} />
+        <Plus style={{ width: '26px', height: '26px', strokeWidth: 3 }} />
       </button>
     </>
   );
