@@ -198,6 +198,116 @@ input[type="text"]:focus {
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
+.btn-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-tab {
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary-light);
+  color: var(--text-main);
+}
+
+.btn-tab.active {
+  background: rgba(124, 58, 237, 0.15);
+  border-color: var(--primary);
+  color: var(--primary-light);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+}
+
+.subject-row {
+  display: grid;
+  grid-template-columns: 1.5fr 3fr 1fr;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease;
+}
+
+.subject-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.subject-row:last-child {
+  border-bottom: none;
+}
+
+.task-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.task-chip {
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.task-chip.completed {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: var(--success);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.badge-theory { background: rgba(124, 58, 237, 0.2); color: var(--primary-light); }
+.badge-lab { background: rgba(34, 211, 238, 0.2); color: var(--accent); }
+.badge-other { background: rgba(219, 39, 119, 0.2); color: var(--secondary); }
+
+@media (max-width: 768px) {
+  .subject-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 .fade-in {
   animation: fadeInSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
