@@ -89,13 +89,26 @@ function App() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="glass-card p-10 max-w-md w-full text-center fade-in">
-          <GraduationCap size={64} className="mx-auto mb-6 text-purple-500" />
-          <h1 className="text-4xl font-bold mb-4">StudyTrack</h1>
-          <p className="text-text-muted mb-8">Stay organized, track your progress, and never miss a deadline again.</p>
-          <button onClick={login} className="btn-primary w-full justify-center text-lg">
+          <div className="float inline-block mb-6">
+            <GraduationCap size={72} className="text-primary-light" />
+          </div>
+          <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary-light to-secondary">
+            StudyTrack
+          </h1>
+          <p className="text-text-muted mb-10 text-lg leading-relaxed">
+            Your academic journey, <br />
+            <span className="text-white font-medium">organized & synchronized</span>.
+          </p>
+          <button onClick={login} className="btn-primary w-full justify-center text-lg py-4">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" className="w-5 h-5 bg-white rounded-full p-0.5" />
-            Continue with Google
+            Sign in with Google
           </button>
+          
+          <div className="mt-8 pt-8 border-t border-border">
+            <p className="text-xs text-text-muted uppercase tracking-widest transition-opacity hover:opacity-100 opacity-60">
+              Secured by Google Firebase
+            </p>
+          </div>
         </div>
       </div>
     );

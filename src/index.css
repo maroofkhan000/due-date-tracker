@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --bg-dark: #050510;
-  --bg-card: rgba(16, 16, 32, 0.7);
-  --primary: #8b5cf6;
+  --bg-dark: #020205;
+  --bg-card: rgba(15, 15, 30, 0.4);
+  --primary: #7c3aed;
   --primary-light: #a78bfa;
-  --secondary: #ec4899;
-  --accent: #06b6d4;
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
-  --border: rgba(255, 255, 255, 0.1);
+  --secondary: #db2777;
+  --accent: #22d3ee;
+  --text-main: #f8fafc;
+  --text-muted: #64748b;
+  --border: rgba(255, 255, 255, 0.08);
   --success: #10b981;
 }
 
@@ -20,14 +20,33 @@
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-dark);
-  background-image: 
-    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
   color: var(--text-main);
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Premium Animated Background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(219, 39, 119, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(34, 211, 238, 0.05) 0%, transparent 50%);
+  z-index: -1;
+  animation: bgPulse 15s ease infinite alternate;
+}
+
+@keyframes bgPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.1); }
 }
 
 /* Layout Utilities */
@@ -84,84 +103,89 @@ body {
 .font-medium { font-weight: 500; }
 
 .text-text-muted { color: var(--text-muted); }
-.text-purple-500 { color: var(--primary); }
+.text-purple-500 { color: var(--primary-light); }
 .text-primary-light { color: var(--primary-light); }
 .text-success { color: var(--success); }
-.text-red-400 { color: #f87171; }
-.bg-success\/10 { background-color: rgba(16, 185, 129, 0.1); }
-.bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
+.text-red-400 { color: #fb7185; }
+.bg-success\/10 { background-color: rgba(16, 185, 129, 0.08); }
+.bg-white\/5 { background-color: rgba(255, 255, 255, 0.03); }
 
 .border-t { border-top: 1px solid var(--border); }
 .border-b { border-bottom: 1px solid var(--border); }
 .border-border { border-color: var(--border); }
 .rounded-full { border-radius: 9999px; }
-.rounded-xl { border-radius: 0.75rem; }
+.rounded-xl { border-radius: 1rem; }
 
 .glass-card {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
 }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 14px 28px;
+  border-radius: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+  filter: brightness(1.1);
 }
 
 .btn-outline {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-main);
   border: 1px solid var(--border);
-  padding: 10px 20px;
-  border-radius: 12px;
+  padding: 12px 24px;
+  border-radius: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .btn-outline:hover {
-  border-color: var(--primary);
-  background: rgba(139, 92, 246, 0.1);
+  border-color: var(--primary-light);
+  background: rgba(124, 58, 237, 0.08);
+  transform: translateY(-1px);
 }
 
 input[type="text"] {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 16px;
+  border-radius: 14px;
+  padding: 14px 20px;
   color: white;
   font-family: inherit;
   font-size: 1rem;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 input[type="text"]:focus {
-  border-color: var(--primary);
+  border-color: var(--primary-light);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
 }
 
 .line-through { text-decoration: line-through; }
@@ -169,13 +193,13 @@ input[type="text"]:focus {
 .opacity-70 { opacity: 0.7; }
 
 /* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInSlideUp {
+  from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeInSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-spin {
@@ -186,3 +210,15 @@ input[type="text"]:focus {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+
