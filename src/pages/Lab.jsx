@@ -22,7 +22,7 @@ export const LabOverview = ({ courses }) => {
 
       {courses.length === 0 && <p className="text-muted text-center" style={{marginTop: '40px'}}>No lab subjects found. Add one from the Other tab.</p>}
 
-      <div className="subjects-table" style={{ marginBottom: '64px', display: courses.length === 0 ? 'none' : 'block' }}>
+      <div className="subjects-table" style={{ marginBottom: '64px', display: courses.length === 0 ? 'none' : '' }}>
         <table>
           <thead>
             <tr>
@@ -165,7 +165,7 @@ export const LabDetail = ({ courses }) => {
             <section>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <h3 className="font-headline text-secondary" style={{ fontSize: '24px', fontWeight: 800 }}>Assignments</h3>
-                <div className="text-muted" style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Due by Friday</div>
+
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                  {[...Array(course.numAssign || 2)].map((_, i) => (

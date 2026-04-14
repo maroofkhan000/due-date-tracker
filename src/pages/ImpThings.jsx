@@ -22,7 +22,7 @@ export const ImpThingsOverview = ({ courses }) => {
 
       {courses.length === 0 && <p className="text-muted text-center" style={{marginTop: '40px'}}>No important things found. Add one manually using the button below.</p>}
 
-      <div className="subjects-table" style={{ marginBottom: '64px', display: courses.length === 0 ? 'none' : 'block' }}>
+      <div className="subjects-table" style={{ marginBottom: '64px', display: courses.length === 0 ? 'none' : '' }}>
         <table>
           <thead>
             <tr>

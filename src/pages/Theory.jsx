@@ -22,7 +22,7 @@ export const TheoryOverview = ({ courses }) => {
 
       {courses.length === 0 && <p className="text-muted text-center" style={{marginTop: '40px'}}>No theory subjects found. Add one from the Other tab.</p>}
 
-      <div className="subjects-table" style={{ marginBottom: '48px', display: courses.length === 0 ? 'none' : 'block' }}>
+      <div className="subjects-table" style={{ marginBottom: '48px', display: courses.length === 0 ? 'none' : '' }}>
         <table>
           <thead>
             <tr>
@@ -84,9 +84,9 @@ export const TheoryOverview = ({ courses }) => {
               <div className="radial-wrap">
                 <svg width="72" height="72" viewBox="0 0 72 72">
                   <circle className="progress-ring-track" cx="36" cy="36" r="32" fill="none" strokeWidth="6" />
-                  <circle className="progress-ring-fill" cx="36" cy="36" r="32" fill="none" strokeWidth="6" strokeDasharray={`${2 * Math.PI * 32}`} strokeDashoffset={`${2 * Math.PI * 32 * (1 - (course.progress || 0)/100)}`} stroke={course.progress > 80 ? 'var(--primary)' : course.progress > 40 ? 'var(--secondary)' : 'var(--tertiary)'} />
+                  <circle className="progress-ring-fill" cx="36" cy="36" r="32" fill="none" strokeWidth="6" strokeDasharray={`${2 * Math.PI * 32}`} strokeDashoffset={`${2 * Math.PI * 32 * (1 - (course.progress || 0)/100)}`} stroke="var(--secondary)" />
                 </svg>
-                <div className="radial-label" style={{ color: course.progress > 80 ? 'var(--primary)' : course.progress > 40 ? 'var(--secondary)' : 'var(--tertiary)' }}>{course.progress || 0}%</div>
+                <div className="radial-label" style={{ color: 'var(--secondary)' }}>{course.progress || 0}%</div>
               </div>
               <div className="subject-card-name">{course.title}</div>
            </div>
@@ -170,7 +170,7 @@ export const TheoryDetail = ({ courses }) => {
             <section>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <h3 className="font-headline text-primary" style={{ fontSize: '24px', fontWeight: 800 }}>Assignments</h3>
-                <div className="text-muted" style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Due by Friday</div>
+
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                  {[...Array(course.numAssign || 2)].map((_, i) => (
