@@ -91,11 +91,12 @@ export const TheoryOverview = ({ courses }) => {
               <div className="subject-card-name">{course.title}</div>
            </div>
          ))}
+         
+         <div className="subject-card-add" onClick={() => navigate('/custom?type=theory')}>
+            <span className="material-symbols-outlined">add</span>
+            <span className="add-label">Add Subject</span>
+         </div>
       </div>
-
-      <button className="fab" onClick={() => navigate('/custom?type=theory')}>
-        <span className="material-symbols-outlined">add</span>
-      </button>
     </main>
   );
 };
@@ -140,10 +141,10 @@ export const TheoryDetail = ({ courses }) => {
            <div className="big-radial-wrap">
               <svg width="128" height="128" viewBox="0 0 128 128">
                 <circle className="progress-ring-track" cx="64" cy="64" r="56" fill="none" strokeWidth="12" />
-                <circle className="progress-ring-fill" cx="64" cy="64" r="56" fill="none" strokeWidth="12" strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - (course.progress||0)/100)}`} stroke="var(--tertiary)" />
+                <circle className="progress-ring-fill" cx="64" cy="64" r="56" fill="none" strokeWidth="12" strokeDasharray={`${2 * Math.PI * 56}`} strokeDashoffset={`${2 * Math.PI * 56 * (1 - (course.progress||0)/100)}`} stroke="var(--secondary)" />
               </svg>
               <div className="big-radial-label">
-                <span className="big-radial-pct" style={{ color: 'var(--tertiary)' }}>{course.progress || 0}%</span>
+                <span className="big-radial-pct" style={{ color: 'var(--secondary)' }}>{course.progress || 0}%</span>
               </div>
            </div>
            <div>

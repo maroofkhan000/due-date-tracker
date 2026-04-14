@@ -91,11 +91,12 @@ export const LabOverview = ({ courses }) => {
               <div className="subject-card-name">{course.title}</div>
            </div>
          ))}
+         
+         <div className="subject-card-add" onClick={() => navigate('/custom?type=lab')}>
+            <span className="material-symbols-outlined">add</span>
+            <span className="add-label">Add Lab</span>
+         </div>
       </div>
-
-      <button className="fab" onClick={() => navigate('/custom?type=lab')}>
-        <span className="material-symbols-outlined">add</span>
-      </button>
     </main>
   );
 };

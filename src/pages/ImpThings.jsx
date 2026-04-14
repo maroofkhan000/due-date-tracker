@@ -72,11 +72,12 @@ export const ImpThingsOverview = ({ courses }) => {
               </div>
            </div>
          ))}
+         
+         <div className="subject-card-add" onClick={() => navigate('/custom?type=imp')}>
+            <span className="material-symbols-outlined">add</span>
+            <span className="add-label">Add Task</span>
+         </div>
       </div>
-
-      <button className="fab" onClick={() => navigate('/custom?type=imp')}>
-        <span className="material-symbols-outlined">add</span>
-      </button>
     </main>
   );
 };
