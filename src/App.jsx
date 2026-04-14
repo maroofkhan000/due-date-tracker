@@ -103,7 +103,7 @@ function App() {
       <div className="login-glow-2"></div>
       <div className="login-card fade-in">
         <div className="login-logo"><span className="material-symbols-outlined" style={{ fontSize: '28px' }}>school</span></div>
-        <h1 className="login-title">Due-Date Tracker</h1>
+        <h1 className="login-title">Progress Tracker</h1>
         <p className="login-sub">Access your curated academic workspace and  progress.</p>
         <button onClick={login} className="google-btn">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style={{width: 18, height: 18}} />

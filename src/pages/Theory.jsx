@@ -17,7 +17,7 @@ export const TheoryOverview = ({ courses }) => {
 
       <section className="mb-12">
         <h1 className="font-headline" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 800, color: 'var(--on-surface)', marginBottom: '8px' }}>Theory Subjects</h1>
-        <p className="text-muted" style={{ fontSize: '15px', maxWidth: '600px', lineHeight: 1.6 }}>Explore the foundations of human thought through our curated theoretical modules. Track your cognitive progression.</p>
+        <p className="text-muted" style={{ fontSize: '15px', maxWidth: '600px', lineHeight: 1.6, marginBottom: '16px' }}>Manage and oversee all your core theory modules directly from this dashboard.</p>
       </section>
 
       {courses.length === 0 && <p className="text-muted text-center" style={{marginTop: '40px'}}>No theory subjects found. Add one from the Other tab.</p>}
@@ -59,9 +59,9 @@ export const TheoryOverview = ({ courses }) => {
                 <td>
                   <div className="progress-bar-wrap">
                     <div className="progress-bar-track" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                       <div className="progress-bar-fill" style={{ width: `${course.progress || 0}%`, backgroundColor: course.progress > 80 ? 'var(--primary)' : course.progress > 40 ? 'var(--secondary)' : 'var(--tertiary)' }}></div>
+                       <div className="progress-bar-fill" style={{ width: `${course.progress || 0}%`, backgroundColor: 'var(--secondary)' }}></div>
                     </div>
-                    <span className="progress-val" style={{ color: course.progress > 80 ? 'var(--primary)' : course.progress > 40 ? 'var(--secondary)' : 'var(--tertiary)', whiteSpace: 'nowrap' }}>{course.completedTasks || 0}/{course.tasks || 0} ({course.progress || 0}%)</span>
+                    <span className="progress-val" style={{ color: 'var(--secondary)', whiteSpace: 'nowrap' }}>{course.completedTasks || 0}/{course.tasks || 0} ({course.progress || 0}%)</span>
                   </div>
                 </td>
                 <td style={{ width: '50px', textAlign: 'right' }}>
@@ -133,7 +133,7 @@ export const TheoryDetail = ({ courses }) => {
             <span className="text-muted" style={{ fontSize: '13px', fontWeight: 600 }}>• Theoretical</span>
           </div>
           <h1 className="detail-title">Advanced {course.title}</h1>
-          <p className="detail-desc">Deep-dive into the ontological arguments, historical contexts, and critical literature reviews relevant to {course.title.toLowerCase()}.</p>
+          <p className="detail-desc" style={{ marginBottom: '32px', lineHeight: '1.6' }}>Detailed overview for {course.title}. Log your assignment submissions, assess quiz completion metrics, and ensure all targeted curriculum coursework is cleanly tracked here.</p>
         </div>
         
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid rgba(173,198,255,0.1)' }}>

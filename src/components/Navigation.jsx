@@ -11,7 +11,7 @@ export const TopNav = ({ user }) => {
 
   return (
     <header className="top-nav">
-      <div className="nav-brand">Scholarly Atelier</div>
+      <div className="nav-brand">Progress Tracker</div>
       <nav className="nav-links">
         <Link to="/" className={`nav-link ${isActive('/') && location.pathname === '/' ? 'active' : ''}`}>Dashboard</Link>
         <Link to="/theory" className={`nav-link ${isActive('/theory') ? 'active' : ''}`}>Theory Sub</Link>
