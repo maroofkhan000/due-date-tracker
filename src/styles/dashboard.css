@@ -1,0 +1,135 @@
+/* ─── Dashboard (Subject Selection) ─────────── */
+
+.selection-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 768px) {
+  .selection-grid { grid-template-columns: 2fr 1fr; }
+}
+
+/* Large hero card (Theory) */
+.selection-card-large {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  background: var(--surface-container);
+  border: 1px solid rgba(221, 183, 255, 0.08);
+  transition: all 0.3s ease;
+}
+.selection-card-large:hover { border-color: rgba(221, 183, 255, 0.2); }
+.selection-card-large:hover .selection-card-img { filter: grayscale(0); opacity: 0.6; }
+
+.selection-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(60%);
+  opacity: 0.35;
+  transition: all 0.6s ease;
+}
+.selection-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--surface-container-lowest), transparent);
+  opacity: 0.7;
+}
+.selection-card-body {
+  position: relative;
+  z-index: 2;
+  padding: 32px;
+}
+
+/* Small card (Lab) */
+.selection-card-small {
+  background: var(--surface-container-high);
+  border-radius: 20px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  border: 1px solid rgba(78, 222, 163, 0.15);
+  transition: background 0.2s ease, border-color 0.2s ease;
+  height: 100%;
+}
+.selection-card-small:hover { background: var(--surface-bright); border-color: rgba(78, 222, 163, 0.35); }
+
+.selection-card-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(78, 222, 163, 0.1);
+  border-radius: 16px;
+  border: 1px solid rgba(78, 222, 163, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--secondary);
+  font-size: 28px;
+}
+
+/* Full-width card (Custom / Other) */
+.selection-full-card {
+  grid-column: 1 / -1;
+  background: var(--surface-container-low);
+  border-radius: 20px;
+  padding: 32px;
+  cursor: pointer;
+  border: 1px solid rgba(173, 198, 255, 0.12);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.selection-full-card:hover { background: var(--surface-bright); }
+.selection-full-card::after {
+  content: 'auto_awesome';
+  font-family: 'Material Symbols Outlined';
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  font-size: 120px;
+  color: var(--primary);
+  opacity: 0.04;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.selection-full-card:hover::after { opacity: 0.09; }
+
+/* Stats row at bottom of dashboard */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+  margin-top: 64px;
+}
+@media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.stat-card {
+  background: var(--surface-container-low);
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.stat-value {
+  font-family: var(--font-headline);
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.stat-title {
+  font-family: var(--font-headline);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin-bottom: 8px;
+}
+.stat-desc { font-size: 13px; color: var(--on-surface-variant); line-height: 1.5; }

@@ -97,6 +97,12 @@ export const TheoryOverview = ({ courses }) => {
             <span className="add-label">Add Subject</span>
          </div>
       </div>
+
+      {/* Desktop-only Add button (hidden on mobile via CSS) */}
+      <button className="fab-desktop" onClick={() => navigate('/custom?type=theory')}>
+        <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>add</span>
+        Add Subject
+      </button>
     </main>
   );
 };

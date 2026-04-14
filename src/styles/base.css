@@ -1,0 +1,120 @@
+/* ============================================
+   SCHOLARLY ATELIER — Design Tokens & Reset
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* ─── Design Tokens ─────────────────────────── */
+:root {
+  /* Surface Hierarchy */
+  --surface-base:               #0b1326;
+  --surface-dim:                #0b1326;
+  --surface-container-lowest:   #060e20;
+  --surface-container-low:      #131b2e;
+  --surface-container:          #171f33;
+  --surface-container-high:     #222a3d;
+  --surface-container-highest:  #2d3449;
+  --surface-variant:            #2d3449;
+  --surface-bright:             #31394d;
+
+  /* Brand Colors */
+  --primary:            #adc6ff;
+  --primary-container:  #0f69dc;
+  --primary-fixed:      #d8e2ff;
+  --secondary:          #4edea3;
+  --secondary-container:#00a572;
+  --tertiary:           #ddb7ff;
+  --tertiary-container: #943fe2;
+  --error:              #ffb4ab;
+  --error-container:    #93000a;
+
+  /* On-Colors */
+  --on-surface:         #dae2fd;
+  --on-surface-variant: #c3c6d7;
+  --on-primary:         #002e6a;
+  --on-secondary:       #003824;
+  --on-tertiary:        #490080;
+  --on-background:      #dae2fd;
+
+  /* Outline */
+  --outline:            #8d90a0;
+  --outline-variant:    #434655;
+
+  /* Inverse */
+  --inverse-surface:    #dae2fd;
+  --inverse-on-surface: #283044;
+  --inverse-primary:    #005ac2;
+
+  /* Typography */
+  --font-headline: 'Manrope', sans-serif;
+  --font-body:     'Inter', sans-serif;
+
+  /* Elevation Shadows */
+  --shadow-float:  0px 24px 48px rgba(0, 0, 0, 0.4);
+  --shadow-card:   0px 8px 24px rgba(0, 0, 0, 0.25);
+  --shadow-modal:  0px 32px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Reset & Base ───────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scrollbar-width: thin; scrollbar-color: var(--outline-variant) transparent; }
+
+body {
+  background-color: var(--surface-base);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: rgba(173, 198, 255, 0.25);
+  color: var(--primary);
+}
+
+/* ─── Material Symbols ────────────────────────── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* ─── Custom Scrollbar ────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 10px; }
+
+/* ─── Animations ───────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(173, 198, 255, 0.2); }
+  50%       { box-shadow: 0 0 20px 4px rgba(173, 198, 255, 0.15); }
+}
+
+.fade-in { animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.spin     { animation: spin 1s linear infinite; }
+
+/* ─── Glassmorphism ───────────────────────────── */
+.glass {
+  background: rgba(13, 19, 38, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* ─── Utility Classes ───────────────────────────── */
+.text-primary   { color: var(--primary); }
+.text-secondary { color: var(--secondary); }
+.text-tertiary  { color: var(--tertiary); }
+.text-muted     { color: var(--on-surface-variant); }
+.font-headline  { font-family: var(--font-headline); }

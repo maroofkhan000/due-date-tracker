@@ -1,0 +1,109 @@
+/* ─── Setup Page (CustomSetup) ───────────────── */
+
+.setup-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 100px;
+}
+
+.setup-header {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+  margin-bottom: 48px;
+}
+.setup-header .page-title   { margin-bottom: 16px; }
+.setup-header .page-subtitle { margin: 0 auto; max-width: 540px; }
+
+.setup-form {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* Count fields row (side-by-side on desktop) */
+.setup-count-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+.setup-count-field { flex: 1; }
+
+/* Action button row */
+.setup-btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 0;
+}
+.setup-btn {
+  flex: 1;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* ─── Form Card Shared ───────────────────────── */
+.form-card {
+  background: var(--surface-container-low);
+  border-radius: 16px;
+  padding: 32px;
+}
+.form-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--on-surface-variant);
+  margin-bottom: 8px;
+}
+.category-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--surface-container-lowest);
+  border-radius: 10px;
+}
+.cat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+}
+.cat-count-input {
+  width: 80px;
+  background: var(--surface-container-highest);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--secondary);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  outline: none;
+  text-align: center;
+}
+
+/* ── Mobile overrides ─────────────────────────── */
+@media (max-width: 767px) {
+  .setup-page   { padding-top: 80px; }
+  .setup-header { margin-bottom: 28px; }
+  .setup-header .page-subtitle { font-size: 13px; }
+
+  .setup-count-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .setup-count-field { width: 100%; }
+
+  .setup-btn-row {
+    flex-direction: column-reverse; /* Submit on top, Cancel below */
+    gap: 10px;
+  }
+  .setup-btn   { width: 100%; padding: 15px; }
+  .form-card   { padding: 20px 16px; }
+}

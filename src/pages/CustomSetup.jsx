@@ -52,44 +52,40 @@ export const CustomSetup = ({ user }) => {
   };
 
   return (
-     <main className="main-content fade-in text-center" style={{ maxWidth: '800px', paddingTop: '120px' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '40px' }}>
-          <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--on-surface-variant)' }}>Curriculum</span>
-          <span className="material-symbols-outlined text-muted" style={{ fontSize: '16px' }}>chevron_right</span>
-          <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--primary)' }}>New Subject Setup</span>
+    <main className="main-content fade-in setup-page">
+      <div className="setup-header">
+        <h1 className="page-title">Define Your <span className="gradient-text">Workspace</span></h1>
+        <p className="page-subtitle">Customize your academic module by specifying categories and weightage. The curriculum will be synchronized to your cloud workspace.</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="setup-form">
+        <div className="form-card" style={{ marginBottom: '24px' }}>
+          <div>
+            <label className="form-label">{type === 'imp' ? 'Imp Things Name' : 'Subject Name'}</label>
+            <input type="text" className="input-field" placeholder={queryType ? "e.g. Advanced Comparative Literature" : "e.g. Upcoming Workshop or Goal"} value={title} onChange={(e) => setTitle(e.target.value)} required />
+          </div>
+
+          {queryType ? (
+            <div className="setup-count-row">
+              <div className="setup-count-field">
+                <label className="form-label">Assignments Count</label>
+                <input type="number" min="0" max="10" className="input-field" value={numAssign} onChange={(e) => setNumAssign(parseInt(e.target.value) || 0)} />
+              </div>
+              <div className="setup-count-field">
+                <label className="form-label">Quizzes Count</label>
+                <input type="number" min="0" max="10" className="input-field" value={numQuiz} onChange={(e) => setNumQuiz(parseInt(e.target.value) || 0)} />
+              </div>
+            </div>
+          ) : null}
         </div>
 
-        <h1 className="page-title" style={{ marginBottom: '16px' }}>Define Your <span className="gradient-text">Workspace</span></h1>
-        <p className="page-subtitle" style={{ margin: '0 auto 48px' }}>Customize your academic module by specifying categories and weightage. The curriculum will be synchronized to your cloud workspace.</p>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-card text-left" style={{ marginBottom: '24px' }}>
-            <div>
-               <label className="form-label">{type === 'imp' ? 'Imp Things Name' : 'Subject Name'}</label>
-               <input type="text" className="input-field" placeholder={queryType ? "e.g. Advanced Comparative Literature" : "e.g. Upcoming Workshop or Goal"} value={title} onChange={(e) => setTitle(e.target.value)} required />
-            </div>
-
-            {queryType ? (
-               <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
-                  <div style={{ flex: 1 }}>
-                     <label className="form-label">Assignments Count</label>
-                     <input type="number" min="0" max="10" className="input-field" value={numAssign} onChange={(e) => setNumAssign(parseInt(e.target.value) || 0)} />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                     <label className="form-label">Quizzes Count</label>
-                     <input type="number" min="0" max="10" className="input-field" value={numQuiz} onChange={(e) => setNumQuiz(parseInt(e.target.value) || 0)} />
-                  </div>
-               </div>
-            ) : null}
-          </div>
-
-          <div style={{ display: 'flex', gap: '16px' }}>
-             <button type="button" className="btn-ghost" style={{ flex: 1, justifyContent: 'center' }} onClick={() => navigate('/')}>Cancel</button>
-             <button type="submit" className="btn-primary" style={{ flex: 1, justifyContent: 'center', padding: '16px' }} disabled={loadingAction}>
-               {loadingAction ? 'Initializing...' : 'Initialize Subject'}
-             </button>
-          </div>
-        </form>
-     </main>
+        <div className="setup-btn-row">
+          <button type="button" className="btn-ghost setup-btn" onClick={() => navigate('/')}>Cancel</button>
+          <button type="submit" className="btn-primary setup-btn" disabled={loadingAction}>
+            {loadingAction ? 'Initializing...' : 'Initialize Subject'}
+          </button>
+        </div>
+      </form>
+    </main>
   );
 };
