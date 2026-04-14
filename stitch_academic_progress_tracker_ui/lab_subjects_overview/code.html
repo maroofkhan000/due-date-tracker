@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lab Subjects Overview - Atelier Academic</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-surface {
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .progress-radial {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#adc6ff",
+                        "on-secondary": "#003824",
+                        "surface-container-highest": "#2d3449",
+                        "surface-container": "#171f33",
+                        "surface": "#0b1326",
+                        "background": "#0b1326",
+                        "on-secondary-fixed-variant": "#005236",
+                        "tertiary-fixed": "#f0dbff",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#2c0051",
+                        "surface-container-low": "#131b2e",
+                        "outline-variant": "#434655",
+                        "on-primary-container": "#ecf0ff",
+                        "tertiary-container": "#943fe2",
+                        "primary-fixed": "#d8e2ff",
+                        "on-surface": "#dae2fd",
+                        "secondary-fixed-dim": "#4edea3",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#ddb7ff",
+                        "inverse-primary": "#005ac2",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-secondary-container": "#00311f",
+                        "on-primary-fixed-variant": "#004395",
+                        "on-error": "#690005",
+                        "secondary-container": "#00a572",
+                        "surface-container-lowest": "#060e20",
+                        "surface-container-high": "#222a3d",
+                        "secondary": "#4edea3",
+                        "primary-container": "#0f69dc",
+                        "on-surface-variant": "#c3c6d7",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-tertiary-fixed-variant": "#6900b3",
+                        "surface-bright": "#31394d",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#dae2fd",
+                        "outline": "#8d90a0",
+                        "on-tertiary-container": "#faecff",
+                        "on-primary-fixed": "#001a42",
+                        "on-primary": "#002e6a",
+                        "surface-dim": "#0b1326",
+                        "on-secondary-fixed": "#002113",
+                        "tertiary": "#ddb7ff",
+                        "on-tertiary": "#490080",
+                        "inverse-on-surface": "#283044",
+                        "on-background": "#dae2fd",
+                        "surface-variant": "#2d3449",
+                        "surface-tint": "#adc6ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#0b1326]/60 backdrop-blur-xl shadow-[0px_24px_48px_rgba(0,0,0,0.4)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#adc6ff]" data-icon="menu_book">menu_book</span>
+<span class="font-headline font-black text-2xl text-[#adc6ff] tracking-tighter">Atelier Academic</span>
+</div>
+<!-- Desktop Navigation Cluster (TopAppBar integration) -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#c3c6d7] hover:text-[#adc6ff] transition-colors font-medium" href="#">Home</a>
+<a class="text-[#adc6ff] border-b-2 border-[#adc6ff] pb-1 font-medium" href="#">Subjects</a>
+<a class="text-[#c3c6d7] hover:text-[#adc6ff] transition-colors font-medium" href="#">Profile</a>
+</nav>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/20 overflow-hidden scale-95 active:scale-90 transition-transform cursor-pointer">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional student wearing glasses in a soft-lit academic library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTojVcyxPCFLfcI4k2zOJMeHTK4_XktzV0cxk4TB9PoEgUIVSjx5B_bhy8z9C8zy4tSn1WENMg79UBJ331YZNqWZtMRBW3U03nO3_hkH_woEzOD3ZwFoSDHQA2Z7EHOJG92K5IbP7bBibqxhiZfp0DYIixWJV9bnZ_2RDUbNbaG1139quNnQMGV5iliwgCzlNyhInD5SLoKmtiqPyDzyVF7qWYsq0swV6gq7wXem9-YtDMcC2G3gm0FkriPcDEs8T8O2QpToTAAMTG"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-32 px-6 max-w-screen-2xl mx-auto min-h-screen">
+<!-- Page Header -->
+<div class="mb-12">
+<h1 class="font-headline font-bold text-4xl md:text-5xl text-on-surface tracking-tight mb-2">Lab Subjects</h1>
+<p class="text-on-surface-variant text-lg max-w-2xl leading-relaxed">Manage your experimental curriculum and track laboratory milestones.</p>
+</div>
+<!-- Mobile Layout: 2-column Grid -->
+<div class="grid grid-cols-2 gap-4 md:hidden">
+<!-- Subject Card 1 -->
+<div class="bg-surface-container-high rounded-xl p-5 flex flex-col items-center text-center space-y-4 hover:bg-surface-bright transition-all active:scale-[0.98]">
+<div class="relative w-20 h-20">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container stroke-current" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle>
+<circle class="text-secondary stroke-current progress-radial" cx="50" cy="50" fill="transparent" r="40" stroke-dasharray="251.2" stroke-dashoffset="75.36" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-headline font-bold text-sm">70%</span>
+</div>
+<h3 class="font-headline font-bold text-sm leading-tight text-on-surface">Neural Architecture Lab</h3>
+</div>
+<!-- Subject Card 2 -->
+<div class="bg-surface-container-high rounded-xl p-5 flex flex-col items-center text-center space-y-4 hover:bg-surface-bright transition-all active:scale-[0.98]">
+<div class="relative w-20 h-20">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container stroke-current" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle>
+<circle class="text-secondary stroke-current progress-radial" cx="50" cy="50" fill="transparent" r="40" stroke-dasharray="251.2" stroke-dashoffset="138.16" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-headline font-bold text-sm">45%</span>
+</div>
+<h3 class="font-headline font-bold text-sm leading-tight text-on-surface">Robotics Systems</h3>
+</div>
+<!-- Subject Card 3 -->
+<div class="bg-surface-container-high rounded-xl p-5 flex flex-col items-center text-center space-y-4 hover:bg-surface-bright transition-all active:scale-[0.98]">
+<div class="relative w-20 h-20">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container stroke-current" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle>
+<circle class="text-secondary stroke-current progress-radial" cx="50" cy="50" fill="transparent" r="40" stroke-dasharray="251.2" stroke-dashoffset="25.12" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-headline font-bold text-sm">90%</span>
+</div>
+<h3 class="font-headline font-bold text-sm leading-tight text-on-surface">Chemical Kinetics</h3>
+</div>
+<!-- Subject Card 4 -->
+<div class="bg-surface-container-high rounded-xl p-5 flex flex-col items-center text-center space-y-4 hover:bg-surface-bright transition-all active:scale-[0.98]">
+<div class="relative w-20 h-20">
+<svg class="w-full h-full" viewbox="0 0 100 100">
+<circle class="text-surface-container stroke-current" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle>
+<circle class="text-secondary stroke-current progress-radial" cx="50" cy="50" fill="transparent" r="40" stroke-dasharray="251.2" stroke-dashoffset="188.4" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<span class="absolute inset-0 flex items-center justify-center font-headline font-bold text-sm">25%</span>
+</div>
+<h3 class="font-headline font-bold text-sm leading-tight text-on-surface">Circuit Design</h3>
+</div>
+</div>
+<!-- Desktop Layout: Clean Data Table -->
+<div class="hidden md:block overflow-hidden rounded-2xl bg-surface-container-low shadow-[0px_24px_48px_rgba(0,0,0,0.2)]">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 border-b border-outline-variant/10">
+<th class="px-8 py-5 font-headline font-bold text-primary text-sm uppercase tracking-widest">Lab Subject</th>
+<th class="px-8 py-5 font-headline font-bold text-primary text-sm uppercase tracking-widest text-center">Lab Sessions</th>
+<th class="px-8 py-5 font-headline font-bold text-primary text-sm uppercase tracking-widest text-center">Quizzes</th>
+<th class="px-8 py-5 font-headline font-bold text-primary text-sm uppercase tracking-widest">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<!-- Table Row 1 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+</div>
+<span class="font-headline font-bold text-on-surface">Neural Architecture Lab</span>
+</div>
+</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">10</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">2</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 70%"></div>
+</div>
+<span class="text-sm font-bold text-primary">70%</span>
+</div>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<span class="font-headline font-bold text-on-surface">Robotics Systems</span>
+</div>
+</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">10</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">2</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 45%"></div>
+</div>
+<span class="text-sm font-bold text-primary">45%</span>
+</div>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+</div>
+<span class="font-headline font-bold text-on-surface">Chemical Kinetics</span>
+</div>
+</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">10</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">2</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 90%"></div>
+</div>
+<span class="text-sm font-bold text-primary">90%</span>
+</div>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+</div>
+<span class="font-headline font-bold text-on-surface">Circuit Design</span>
+</div>
+</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">10</td>
+<td class="px-8 py-6 text-center font-medium text-on-surface-variant">2</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: 25%"></div>
+</div>
+<span class="text-sm font-bold text-primary">25%</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Visual Anchor Element: Lab Environment Image -->
+<div class="mt-16 rounded-3xl overflow-hidden relative h-64 md:h-96 shadow-[0px_32px_64px_rgba(0,0,0,0.5)]">
+<img class="w-full h-full object-cover" data-alt="Modern high-tech laboratory environment with glowing blue equipment, digital interfaces, and clean clinical aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuJxEut2B9PEgdAePMw3FIfi1HQqlAnsoCv2s54bKGepDBS3Q1a--7B49dLI4pvN6bXojG4CLcbGy3GgLVo59VUC77Mm8TojFKJiBK6PdC0UvhNb-kM1WNQXXlYE7jsG1V-JrhNido91F4FNz5NLJrHTcrFNVJvumC8WHWGGWrc13uVjoLq3hIEZDY9xnDOmCa6USpPkiepQ2KT3tNKSDWUWpchSq05SlyV2mZeJiO3z5BagmtUjhCZOp_KXjAvJ55VKhW7Qe7qaeY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 backdrop-blur-md text-primary text-xs font-bold uppercase tracking-widest mb-3">
+<span class="material-symbols-outlined text-[14px]" data-icon="visibility">visibility</span> Next Milestone
+                </span>
+<h4 class="font-headline font-bold text-2xl text-on-surface">Quantum Synthesis Finals</h4>
+<p class="text-on-surface-variant text-sm">Scheduled for Friday, Oct 24th • Laboratory B-12</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#131b2e]/80 backdrop-blur-md shadow-[0_-10px_30px_rgba(0,0,0,0.3)] rounded-t-2xl">
+<a class="flex flex-col items-center justify-center text-[#c3c6d7] px-5 py-2 hover:bg-[#222a3d] transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#2d3449] text-[#adc6ff] rounded-xl px-5 py-2 transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="biotech">biotech</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest">Subjects</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#c3c6d7] px-5 py-2 hover:bg-[#222a3d] transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-widest">Profile</span>
+</a>
+</nav>
+</body></html>

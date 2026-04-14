@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Subject Selection | Cybernetic Research</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#2d3449",
+                        "secondary": "#a3ff00", // Neon lime green
+                        "on-primary": "#002020",
+                        "on-secondary-fixed-variant": "#224400",
+                        "on-tertiary-fixed": "#330033",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004b4b",
+                        "primary-fixed-dim": "#00f0ff",
+                        "outline": "#8d90a0",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#ff00ff",
+                        "tertiary-fixed": "#ff00ff",
+                        "tertiary": "#ff00ff", // Intense magenta
+                        "secondary-fixed": "#a3ff00",
+                        "on-secondary": "#112200",
+                        "surface-container-lowest": "#060e20",
+                        "inverse-surface": "#dae2fd",
+                        "surface-container-high": "#222a3d",
+                        "inverse-primary": "#005ac2",
+                        "on-surface": "#dae2fd",
+                        "secondary-fixed-dim": "#a3ff00",
+                        "on-tertiary-fixed-variant": "#aa00aa",
+                        "surface-bright": "#31394d",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "surface-container-low": "#131b2e",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#dae2fd",
+                        "on-surface-variant": "#c3c6d7",
+                        "surface-variant": "#2d3449",
+                        "surface-container": "#171f33",
+                        "on-secondary-container": "#112200",
+                        "on-tertiary-container": "#ffffff",
+                        "primary-fixed": "#b2f7ff",
+                        "primary": "#00f0ff", // Electric Cyan
+                        "on-primary-container": "#e0ffff",
+                        "background": "#0b1326",
+                        "surface-tint": "#00f0ff",
+                        "tertiary-container": "#ff00ff",
+                        "surface-dim": "#0b1326",
+                        "on-primary-fixed": "#002020",
+                        "secondary-container": "#a3ff00",
+                        "on-secondary-fixed": "#112200",
+                        "surface": "#0b1326",
+                        "primary-container": "#006666",
+                        "inverse-on-surface": "#283044",
+                        "outline-variant": "#434655"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-scholarly-gradient {
+            background: linear-gradient(135deg, #00f0ff 0%, #006666 100%);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 min-h-screen">
+<header class="hidden md:flex bg-[#0b1326] backdrop-blur-xl bg-opacity-60 text-primary font-['Manrope'] font-semibold tracking-tight text-sm fixed top-0 w-full flex justify-between items-center px-8 h-16 z-50 shadow-[0px_24px_48px_rgba(0,0,0,0.4)]">
+<div class="text-2xl font-black tracking-tighter text-primary">Scholarly Atelier</div>
+<nav class="flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200" href="#">Dashboard</a>
+<a class="text-primary border-b-2 border-primary pb-1 active:scale-95 duration-200" href="#">Courses</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200" href="#">Research</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200" href="#">Schedule</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="hover:bg-surface-variant rounded-lg transition-all p-2 active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<button class="hover:bg-surface-variant rounded-lg transition-all p-2 active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">settings</span>
+</button>
+</div>
+<img alt="Student Profile Avatar" class="w-8 h-8 rounded-full border border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP-01_zLotdmmOXB2-YJW-6wSHOb7KN1zN-wLsru6RcyeS5iQAH5rrx0B3u0NEA13_WlQsHGyX6QCJDuwISlKfBBeHQMogqNJTQCndyPLnGD70EO0Y7HQmn6Z98OfXiQ-aXI5M-imfVeOdU7Um3rEGKIK34Al6mw2BqQPttVvt8YNFMByP7UXgWZXIEYulS83r3B1uoXnxet58U85AZDU8uPr-lUqE0w0csGXgXHcN2elsnGB8MPT3QnA2XMvtwwAAGLwloS7DwILK"/>
+</div>
+</header>
+<div class="md:hidden flex items-center justify-between px-6 pt-8 pb-4">
+<div>
+<h1 class="font-headline text-2xl font-bold text-on-background">Course Track</h1>
+<p class="text-on-surface-variant text-sm font-medium">Select your focus area</p>
+</div>
+<button class="bg-surface-container-highest p-2 rounded-xl">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+</div>
+<main class="md:pt-32 pb-24 md:pb-12 px-6 md:px-12 max-w-7xl mx-auto">
+<section class="hidden md:block mb-12">
+<h2 class="font-headline text-5xl font-extrabold tracking-tight mb-2">Refine Your Curriculum</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl">Choose the nature of your next academic endeavor. Your selection determines the methodology and resources allocated to your workspace.</p>
+</section>
+<!-- Main Grid adjusted for Tablet side-by-side Theory and Lab -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 items-stretch">
+<!-- Theory Card -->
+<div class="lg:col-span-8 bg-surface-container rounded-2xl overflow-hidden group cursor-pointer hover:bg-surface-bright transition-all duration-300 relative border border-tertiary/10 flex flex-col">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-60 pointer-events-none"></div>
+<img alt="Minimalist library setting" class="w-full h-64 md:h-full lg:h-96 object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-40 group-hover:opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKFrxNksBPM6FWwYOK7aOMruN4sECUC17M-uEv-PMGaymYzSACvMxFBbjwZxWE1jQ70T5ROf2gq32Zr42IBrOM9GYWuuUnkwZQY3Sgo4h6ybiIJrt_4KR-f383CoxlwZ4zbHJMBDhDNxOP1z_3q4XfKWGknscn2FlxdsLKrnPPZSbJJ3dfTcHzNzwuGCuTmedSFhFZT0XbbmrMaOdkOf02_sBHZRO3-vB-vNUNC41hkRLkq4HcLw7LXrdZfe1f3a_t8miJ-Pciu4PZ"/>
+<div class="absolute inset-0 p-8 flex flex-col justify-end">
+<div class="flex items-center gap-3 mb-3">
+<div class="bg-tertiary text-on-tertiary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(255,0,255,0.4)]">Theoretical</div>
+<span class="text-on-surface-variant text-sm font-medium">48 Modules Available</span>
+</div>
+<h3 class="font-headline text-3xl font-bold text-on-surface mb-2">Principles &amp; Analysis</h3>
+<p class="text-on-surface-variant text-md max-w-lg mb-6">Deep-dive into abstract frameworks, historical contexts, and critical literature reviews. Designed for extensive reading and synthesis.</p>
+<div>
+<button class="bg-scholarly-gradient text-on-primary px-6 py-3 rounded-lg font-bold flex items-center gap-2 group-hover:gap-4 transition-all shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                    Begin Theory Path
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Laboratory Card -->
+<div class="lg:col-span-4 flex flex-col">
+<div class="h-full bg-surface-container-high rounded-2xl p-8 hover:bg-surface-bright transition-all cursor-pointer border border-secondary/20 shadow-[0_0_30px_rgba(163,255,0,0.05)] flex flex-col">
+<div class="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6 border border-secondary/30">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">science</span>
+</div>
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-3">Laboratory Practice</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 flex-grow">Practical applications, experimentation, and data analysis. Access virtual labs and technical simulators.</p>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/10">
+<span class="text-secondary font-bold text-xs uppercase tracking-widest">Active Workshops</span>
+<span class="bg-secondary/20 text-secondary px-2 py-0.5 rounded text-xs font-black">12</span>
+</div>
+</div>
+</div>
+<!-- Custom Elective Card (Spanning width on tablet/lg) -->
+<div class="md:col-span-2 lg:col-span-12">
+<div class="bg-surface-container-low rounded-2xl p-8 hover:bg-surface-bright transition-all cursor-pointer relative overflow-hidden group border border-primary/20">
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-9xl text-primary">auto_awesome</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-3">Custom Elective</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6 lg:max-w-3xl">Build your own interdisciplinary module. Combine cross-faculty resources for a unique academic blend tailored to your specific research interests.</p>
+<div class="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
+                    Configure Now
+                    <span class="material-symbols-outlined text-sm">settings_suggest</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section class="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex flex-col p-6 rounded-2xl bg-surface-container-low border border-primary/5">
+<span class="text-primary font-black text-4xl mb-4 font-headline drop-shadow-[0_0_8px_rgba(0,240,255,0.4)]">98%</span>
+<h4 class="font-bold text-on-surface mb-2">Completion Rate</h4>
+<p class="text-on-surface-variant text-sm">Students who follow the structured Atelier paths show significantly higher retention rates.</p>
+</div>
+<div class="flex flex-col p-6 rounded-2xl bg-surface-container-low border border-secondary/5">
+<span class="text-secondary font-black text-4xl mb-4 font-headline drop-shadow-[0_0_8px_rgba(163,255,0,0.4)]">24/7</span>
+<h4 class="font-bold text-on-surface mb-2">Research Access</h4>
+<p class="text-on-surface-variant text-sm">Global library access is included with all Theoretical and Practical modules.</p>
+</div>
+<div class="flex flex-col p-6 rounded-2xl bg-surface-container-low border border-tertiary/5">
+<span class="text-tertiary font-black text-4xl mb-4 font-headline drop-shadow-[0_0_8px_rgba(255,0,255,0.4)]">Sync</span>
+<h4 class="font-bold text-on-surface mb-2">Cross-Platform</h4>
+<p class="text-on-surface-variant text-sm">Your progress is updated in real-time across the Scholarly mobile and desktop ecosystem.</p>
+</div>
+</section>
+</main>
+<button class="fixed bottom-24 right-6 md:bottom-12 md:right-12 w-14 h-14 bg-scholarly-gradient text-on-primary rounded-full shadow-[0_0_30px_rgba(0,240,255,0.4)] z-40 flex items-center justify-center hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#0b1326]/80 backdrop-blur-2xl border-t border-primary/10 shadow-2xl shadow-black">
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:bg-surface-variant transition-transform duration-300">
+<span class="material-symbols-outlined mb-1">home_app_logo</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-surface-container-highest text-primary rounded-xl px-4 py-1.5 active:bg-surface-variant transition-transform duration-300 border border-primary/20">
+<span class="material-symbols-outlined mb-1">school</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold">Academia</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:bg-surface-variant transition-transform duration-300">
+<span class="material-symbols-outlined mb-1">auto_stories</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold">Library</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1.5 active:bg-surface-variant transition-transform duration-300">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-bold">Profile</span>
+</div>
+</nav>
+</body></html>

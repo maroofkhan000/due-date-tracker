@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atelier Academic - Subject Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#ecf0ff",
+                        "surface-container-highest": "#2d3449",
+                        "on-primary-fixed": "#001a42",
+                        "background": "#0b1326",
+                        "tertiary-fixed": "#f0dbff",
+                        "surface": "#0b1326",
+                        "surface-bright": "#31394d",
+                        "surface-container-low": "#131b2e",
+                        "on-surface-variant": "#c3c6d7",
+                        "on-secondary-fixed": "#002113",
+                        "primary-fixed-dim": "#adc6ff",
+                        "on-tertiary-fixed-variant": "#6900b3",
+                        "error-container": "#93000a",
+                        "outline": "#8d90a0",
+                        "tertiary-container": "#943fe2",
+                        "inverse-on-surface": "#283044",
+                        "surface-tint": "#adc6ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-primary-fixed-variant": "#004395",
+                        "secondary": "#4edea3",
+                        "tertiary-fixed-dim": "#ddb7ff",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary": "#003824",
+                        "surface-container-lowest": "#060e20",
+                        "tertiary": "#ddb7ff",
+                        "surface-container": "#171f33",
+                        "primary-container": "#0f69dc",
+                        "on-tertiary-fixed": "#2c0051",
+                        "secondary-container": "#00a572",
+                        "surface-container-high": "#222a3d",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-background": "#dae2fd",
+                        "inverse-primary": "#005ac2",
+                        "inverse-surface": "#dae2fd",
+                        "on-tertiary-container": "#faecff",
+                        "secondary-fixed": "#6ffbbe",
+                        "primary": "#adc6ff",
+                        "surface-dim": "#0b1326",
+                        "on-surface": "#dae2fd",
+                        "outline-variant": "#434655",
+                        "on-primary": "#002e6a",
+                        "on-tertiary": "#490080",
+                        "surface-variant": "#2d3449",
+                        "on-secondary-container": "#00311f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .progress-radial {
+            background: conic-gradient(#4edea3 75%, #222a3d 0);
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-on-primary min-h-screen">
+<!-- Top Navigation Bar (Refined to match SCREEN_13 exactly) -->
+<header class="hidden md:flex bg-[#0b1326]/60 backdrop-blur-xl text-[#adc6ff] font-headline font-semibold tracking-tight text-sm fixed top-0 w-full flex justify-between items-center px-8 h-16 z-50 shadow-[0px_24px_48px_rgba(0,0,0,0.4)]">
+<div class="text-2xl font-black tracking-tighter text-[#adc6ff]">Scholarly Atelier</div>
+<nav class="flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200" href="#">Dashboard</a>
+<a class="text-primary border-b-2 border-primary pb-1 active:scale-95 duration-200" href="#">Courses</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200" href="#">Research</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-200" href="#">Schedule</a>
+</nav>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="hover:bg-surface-variant rounded-lg transition-all p-2 active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<button class="hover:bg-surface-variant rounded-lg transition-all p-2 active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary">settings</span>
+</button>
+</div>
+<img alt="Student Profile Avatar" class="w-8 h-8 rounded-full border border-primary/30 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP-01_zLotdmmOXB2-YJW-6wSHOb7KN1zN-wLsru6RcyeS5iQAH5rrx0B3u0NEA13_WlQsHGyX6QCJDuwISlKfBBeHQMogqNJTQCndyPLnGD70EO0Y7HQmn6Z98OfXiQ-aXI5M-imfVeOdU7Um3rEGKIK34Al6mw2BqQPttVvt8YNFMByP7UXgWZXIEYulS83r3B1uoXnxet58U85AZDU8uPr-lUqE0w0csGXgXHcN2elsnGB8MPT3QnA2XMvtwwAAGLwloS7DwILK"/>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-6 pt-24 pb-32">
+<!-- Hero Section: Subject Header -->
+<div class="relative w-full rounded-2xl overflow-hidden mb-12 h-64 flex items-end bg-surface-container">
+<div class="relative z-10 p-8 w-full flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-tertiary/20 text-tertiary px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase">Humanities</span>
+<span class="text-on-surface-variant text-sm tracking-wide">• 4.0 Credits</span>
+</div>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight">Advanced Metaphysics</h2>
+<p class="text-on-surface-variant mt-2 max-w-xl leading-relaxed"></p>
+</div>
+<!-- Progress Radial Insight -->
+<div class="flex items-center gap-4 bg-surface-container-high/40 backdrop-blur-md p-4 rounded-2xl border border-outline-variant/15">
+<div class="relative w-16 h-16 rounded-full progress-radial flex items-center justify-center">
+<div class="absolute w-[80%] h-[80%] bg-[#131b2e] rounded-full flex items-center justify-center">
+<span class="text-secondary font-headline font-bold text-sm">75%</span>
+</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[10px] uppercase tracking-widest font-bold">Completion</div>
+<div class="text-on-surface font-headline font-bold text-lg">6/8 Tasks</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Content Grid: Bento Style -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Assignments -->
+<div class="lg:col-span-7 space-y-8">
+<section>
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-4">
+<h3 class="font-headline text-2xl font-bold text-primary tracking-tight">Assignments</h3>
+<div class="flex items-center bg-surface-container-low rounded-lg p-1 border border-outline-variant/15">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="w-8 text-center font-bold text-sm">2</span>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<span class="text-on-surface-variant text-xs font-label">Due by Friday</span>
+</div>
+<div class="space-y-3">
+<!-- Assignment Item 1 -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-high rounded-xl hover:bg-surface-bright transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-secondary rounded flex items-center justify-center bg-secondary/10">
+<span class="material-symbols-outlined text-secondary text-lg" style='font-variation-settings: "FILL" 1;'>check</span>
+</div>
+<div>
+<span class="text-on-surface font-semibold block">Assignment 1: Ontological Arguments</span>
+<span class="text-on-surface-variant text-xs">Research Paper • 1,500 words</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+<!-- Assignment Item 2 -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-high rounded-xl hover:bg-surface-bright transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-outline-variant rounded flex items-center justify-center"></div>
+<div>
+<span class="text-on-surface font-semibold block">Assignment 2: Critique of Pure Reason</span>
+<span class="text-on-surface-variant text-xs">Comparative Analysis • Pending</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-4">
+<h3 class="font-headline text-2xl font-bold text-tertiary tracking-tight">Quizzes</h3>
+<div class="flex items-center bg-surface-container-low rounded-lg p-1 border border-outline-variant/15">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-tertiary transition-all active:scale-90">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="w-8 text-center font-bold text-sm">2</span>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface-variant hover:text-tertiary transition-all active:scale-90">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<span class="text-on-surface-variant text-xs font-label">Weekly Assessment</span>
+</div>
+<div class="space-y-3">
+<!-- Quiz Item 1 -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-high rounded-xl hover:bg-surface-bright transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-secondary rounded flex items-center justify-center bg-secondary/10">
+<span class="material-symbols-outlined text-secondary text-lg" style='font-variation-settings: "FILL" 1;'>check</span>
+</div>
+<div>
+<span class="text-on-surface font-semibold block">Quiz 1: Early Greek Philosophers</span>
+<span class="text-on-surface-variant text-xs">Score: 95/100</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+<!-- Quiz Item 2 -->
+<div class="group flex items-center justify-between p-5 bg-surface-container-high rounded-xl hover:bg-surface-bright transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 border-2 border-secondary rounded flex items-center justify-center bg-secondary/10">
+<span class="material-symbols-outlined text-secondary text-lg" style='font-variation-settings: "FILL" 1;'>check</span>
+</div>
+<div>
+<span class="text-on-surface font-semibold block">Quiz 2: Cartesian Dualism</span>
+<span class="text-on-surface-variant text-xs">Score: 88/100</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column -->
+<div class="lg:col-span-5 space-y-8">
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#0b1326]/60 backdrop-blur-xl z-50 flex justify-around items-center px-4 pb-6 pt-3 shadow-[0px_-24px_48px_rgba(0,0,0,0.4)] border-t border-outline-variant/15">
+<a class="flex flex-col items-center justify-center text-[#c3c6d7] px-5 py-2 hover:bg-surface-container-highest/50 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-surface-container-highest text-[#adc6ff] rounded-2xl px-5 py-2 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>menu_book</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Subjects</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#c3c6d7] px-5 py-2 hover:bg-surface-container-highest/50 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-widest font-semibold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

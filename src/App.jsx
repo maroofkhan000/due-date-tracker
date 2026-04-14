@@ -1,20 +1,91 @@
 import React, { useState, useEffect } from 'react';
-import { auth, googleProvider } from './firebase';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { Bell, Settings, ArrowRight, Plus } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { auth, googleProvider, db } from './firebase';
+import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+
+import { TopNav, BottomNav } from './components/Navigation';
+import { SubjectSelection } from './pages/Dashboard';
+import { TheoryOverview, TheoryDetail } from './pages/Theory';
+import { LabOverview, LabDetail } from './pages/Lab';
+import { ImpThingsOverview } from './pages/ImpThings';
+import { CustomSetup } from './pages/CustomSetup';
+import { ConfirmProvider } from './contexts/ConfirmContext';
+import './modal.css';
 
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  
+  // Real-time Firestore Data
+  const [theoryCourses, setTheoryCourses] = useState([]);
+  const [labCourses, setLabCourses] = useState([]);
+  const [impThings, setImpThings] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, u => {
+    const unsubscribeAuth = onAuthStateChanged(auth, u => {
       setUser(u);
       setLoading(false);
     });
-    return () => unsubscribe();
+    return () => unsubscribeAuth();
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const q = query(collection(db, 'subjects'), where('userId', '==', user.uid));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const allSubjects = snapshot.docs.map(doc => {
+        const data = doc.data();
+        
+        // Dynamic mapping of legacy properties (From assignment/quiz booleans)
+        let completed = 0;
+        let total = data.tasks || 4;
+        let submissionsRaw = 0;
+        let nAssign = data.numAssign !== undefined ? data.numAssign : (data.assignment1 !== undefined ? 2 : 0);
+        let nQuiz = data.numQuiz !== undefined ? data.numQuiz : (data.quiz1 !== undefined ? 2 : 0);
+        
+        for (let i = 1; i <= nAssign; i++) {
+           if (data[`assignment${i}`]) { completed++; submissionsRaw++; }
+        }
+        for (let i = 1; i <= nQuiz; i++) {
+           if (data[`quiz${i}`]) completed++;
+        }
+        
+        const actualTasks = nAssign + nQuiz;
+        if (actualTasks > 0) total = actualTasks;
+
+        const prog = total > 0 ? Math.round((completed / total) * 100) : (data.progress || 0);
+        
+        let autoType = data.type;
+        if (!autoType) {
+           // Segregate legacy subjects based on name clues
+           const legacyTitle = (data.name || data.title || '').toLowerCase();
+           autoType = legacyTitle.includes('lab') ? 'lab' : 'theory';
+        }
+
+        return {
+           id: doc.id,
+           title: data.name || data.title,
+           progress: prog,
+           completedTasks: completed,
+           tasks: total,
+           submissions: submissionsRaw,
+           pending: total - completed,
+           sessions: data.sessions || 0,
+           quizzes: data.quizzes || 0,
+           type: autoType,
+           ...data
+        }
+      });
+      
+      setTheoryCourses(allSubjects.filter(c => c.type !== 'lab' && c.type !== 'imp'));
+      setLabCourses(allSubjects.filter(c => c.type === 'lab'));
+      setImpThings(allSubjects.filter(c => c.type === 'imp'));
+    });
+
+    return () => unsubscribe();
+  }, [user]);
 
   const login = async () => {
     try {
@@ -24,144 +95,47 @@ function App() {
     }
   };
 
-  if (loading) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#0f1524' }}>
-      <div className="animate-spin" style={{ width: '48px', height: '48px', borderRadius: '50%', border: '3px solid rgba(0,229,255,0.15)', borderTopColor: '#00e5ff' }}></div>
-    </div>
-  );
+  if (loading) return <div className="loading-page"><div className="loader"></div></div>;
 
   if (!user) return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: '#0f1524' }}>
-      <div className="card fade-in" style={{ padding: '2.5rem', maxWidth: '26rem', width: '100%', textAlign: 'center' }}>
-        <h1 className="font-outfit" style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--primary)', marginBottom: '0.5rem' }}>Scholarly Atelier</h1>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>Sign in to refine your curriculum.</p>
-        <button onClick={login} className="btn-cyan" style={{ width: '100%', justifyContent: 'center' }}>
-          Sign in with Google
+    <div className="login-page">
+      <div className="login-glow-1"></div>
+      <div className="login-glow-2"></div>
+      <div className="login-card fade-in">
+        <div className="login-logo"><span className="material-symbols-outlined" style={{ fontSize: '28px' }}>school</span></div>
+        <h1 className="login-title">Due-Date Tracker</h1>
+        <p className="login-sub">Access your curated academic workspace and  progress.</p>
+        <button onClick={login} className="google-btn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style={{width: 18, height: 18}} />
+          Authenticate with Google
         </button>
+        <div className="login-divider">
+          <div className="login-divider-line"></div>
+          <span className="login-divider-text">Institution</span>
+          <div className="login-divider-line"></div>
+        </div>
+        <div className="login-footer">Secure access provided by Google Authentication.</div>
       </div>
     </div>
   );
 
   return (
-    <>
-      {/* Top Navbar */}
-      <nav className="navbar">
-        <div className="nav-brand font-outfit">Scholarly Atelier</div>
-        <div className="nav-links">
-          <a href="#" className={`nav-link${activeTab === 'dashboard' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('dashboard'); }}>Dashboard</a>
-          <a href="#" className={`nav-link${activeTab === 'courses' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('courses'); }}>Courses</a>
-          <a href="#" className={`nav-link${activeTab === 'research' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('research'); }}>Research</a>
-          <a href="#" className={`nav-link${activeTab === 'schedule' ? ' active' : ''}`} onClick={e => { e.preventDefault(); setActiveTab('schedule'); }}>Schedule</a>
-        </div>
-        <div className="nav-actions">
-          <button className="nav-icon"><Bell size={20} /></button>
-          <button className="nav-icon"><Settings size={20} /></button>
-          <img
-            src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=0D8ABC&color=fff`}
-            alt="User"
-            className="avatar"
-            title="Sign Out"
-            onClick={() => signOut(auth)}
-            style={{ cursor: 'pointer' }}
-          />
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container">
-        <header className="page-header">
-          <h1 className="header-title font-outfit">Refine Your Curriculum</h1>
-          <p className="header-desc">
-            Choose the nature of your next academic endeavor. Your selection determines the methodology and resources allocated to your workspace.
-          </p>
-        </header>
-
-        <div className="main-grid">
-          {/* Big Theoretical Card */}
-          <div className="card theory-card">
-            <div className="theory-bg"></div>
-            <div className="theory-gradient"></div>
-
-            <div className="theory-content">
-              <div className="badge-row">
-                <span className="badge-magenta">THEORETICAL</span>
-                <span className="theory-subtitle">48 Modules Available</span>
-              </div>
-              <h2 className="theory-title font-outfit">Principles &amp; Analysis</h2>
-              <p className="theory-desc">
-                Deep-dive into abstract frameworks, historical contexts, and critical literature reviews. Designed for extensive reading and synthesis.
-              </p>
-              <button className="btn-cyan">
-                Begin Theory Path <ArrowRight style={{ width: '18px', height: '18px' }} />
-              </button>
-            </div>
-          </div>
-
-          {/* Right Stack */}
-          <div className="right-col">
-            {/* Practice Card */}
-            <div className="card practice-card">
-              <div className="icon-box">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
-                </svg>
-              </div>
-              <h3 className="card-title font-outfit">Laboratory Practice</h3>
-              <p className="card-desc">
-                Practical applications, experimentation, and data analysis. Access virtual labs and technical simulators.
-              </p>
-              <div className="practice-bottom">
-                <span className="practice-label">ACTIVE WORKSHOPS</span>
-                <span className="practice-val">12</span>
-              </div>
-            </div>
-
-            {/* Custom Card */}
-            <div className="card custom-card">
-              <div style={{ position: 'absolute', right: '10px', bottom: '10px', opacity: 0.03, pointerEvents: 'none' }}>
-                <svg width="150" height="150" viewBox="0 0 100 100" fill="#00e5ff">
-                  <path d="M50 0 L55 40 L95 45 L55 50 L50 90 L45 50 L5 45 L45 40 Z"/>
-                  <path d="M85 70 L87 85 L100 87 L87 89 L85 100 L83 89 L70 87 L83 85 Z"/>
-                </svg>
-              </div>
-              <h3 className="card-title font-outfit" style={{ position: 'relative', zIndex: 2 }}>Custom Elective</h3>
-              <p className="card-desc" style={{ position: 'relative', zIndex: 2 }}>
-                Build your own interdisciplinary module. Combine cross-faculty resources for a unique academic blend.
-              </p>
-              <div className="custom-bottom" style={{ position: 'relative', zIndex: 2 }}>
-                <button className="btn-config">
-                  CONFIGURE NOW <Settings style={{ width: '14px', height: '14px' }} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Stats Grid */}
-        <div className="stats-grid">
-          <div className="stat-card">
-            <h4 className="stat-val val-cyan font-outfit">98%</h4>
-            <h5 className="stat-title">Completion Rate</h5>
-            <p className="stat-desc">Students who follow the structured Atelier paths show significantly higher retention rates.</p>
-          </div>
-          <div className="stat-card">
-            <h4 className="stat-val val-lime font-outfit">24/7</h4>
-            <h5 className="stat-title">Research Access</h5>
-            <p className="stat-desc">Global library access is included with all Theoretical and Practical modules.</p>
-          </div>
-          <div className="stat-card">
-            <h4 className="stat-val val-magenta font-outfit">Sync</h4>
-            <h5 className="stat-title">Cross-Platform</h5>
-            <p className="stat-desc">Your progress is updated in real-time across the Scholarly mobile and desktop ecosystem.</p>
-          </div>
-        </div>
-      </main>
-
-      {/* Floating Action Button */}
-      <button className="fab">
-        <Plus style={{ width: '26px', height: '26px', strokeWidth: 3 }} />
-      </button>
-    </>
+    <ConfirmProvider>
+      <Router>
+        <TopNav user={user} />
+        <Routes>
+          <Route path="/" element={<SubjectSelection theoryCount={theoryCourses.length} labCount={labCourses.length} />} />
+          <Route path="/theory" element={<TheoryOverview courses={theoryCourses} />} />
+          <Route path="/theory/:id" element={<TheoryDetail courses={theoryCourses} />} />
+          <Route path="/lab" element={<LabOverview courses={labCourses} />} />
+          <Route path="/lab/:id" element={<LabDetail courses={labCourses} />} />
+          <Route path="/imp-things" element={<ImpThingsOverview courses={impThings} />} />
+          <Route path="/custom" element={<CustomSetup user={user} />} />
+          <Route path="*" element={<SubjectSelection theoryCount={theoryCourses.length} labCount={labCourses.length} />} />
+        </Routes>
+        <BottomNav />
+      </Router>
+    </ConfirmProvider>
   );
 }
 
